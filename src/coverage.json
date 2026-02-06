@@ -1,0 +1,124 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-06T17:06:19.818Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 6,
+    "implemented": 5,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Ensure the app presents clear \"Login\" and \"Sign up\" options to users, but both must use the same Mobile OTP flow (no additional/alternative login methods exposed in the UI).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/components/SignupModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/HomePage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "After a new user verifies OTP for the first time (i.e., no existing profile), require them to complete profile setup by collecting: mobile number, profile picture, and Gmail ID, then save it to the backend profile.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/ProfileSetupModal.tsx",
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/ProfileSetupModal.tsx",
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Adjust backend user profile creation/update logic so a profile can exist in an incomplete state until the user completes profile setup (use the existing `profileComplete` flag appropriately).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Fix/soften the OTP modal error experience shown as \"Service temporarily unavailable\" by adding an explicit retry action and clearer recovery guidance, without changing the OTP-only requirement.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/hooks/useMobileAuth.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/hooks/useMobileAuth.ts"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Rename all user-facing occurrences of the brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" (triple 's'), including headings, toasts, alt text, and loading text.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/components/Footer.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/components/LoginModal.tsx",
+          "frontend/src/components/Footer.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Increase the writable/editable area height and spacing for the syllabus editor (Admin Panel \u0000 Syllabus) so long writing is fully visible while typing.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminPanel.tsx",
+          "frontend/src/index.css"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/LoginModal.tsx",
+    "frontend/src/components/ProfileSetupModal.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useMobileAuth.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/MockTestsPage.tsx",
+    "frontend/src/pages/ProgressPage.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

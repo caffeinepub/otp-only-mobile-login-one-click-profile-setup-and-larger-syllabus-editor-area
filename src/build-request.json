@@ -1,0 +1,138 @@
+{
+  "kind": "build_request",
+  "title": "OTP-only auth with signup/profile setup, rename to Exam Xpresss, and larger syllabus editor",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Ensure the app presents clear \"Login\" and \"Sign up\" options to users, but both must use the same Mobile OTP flow (no additional/alternative login methods exposed in the UI).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6",
+          "msg-10"
+        ],
+        "quotes": [
+          "Ye dekho login aur signup ka option rahne do taki log apna login aur sign up Karen... bus tumko basically yah karna hai ki sirf OTP login Aaye Baki dobara Koi aur login Na Aaye",
+          "Do it again"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When logged out, the UI shows both \"Login\" and \"Sign up\" entry points.",
+        "Clicking either entry point opens the Mobile OTP modal/flow.",
+        "No separate username/password, Google, or other non-OTP login UI is present.",
+        "Existing deprecated SignupModal notice is no longer reachable from user navigation."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "After a new user verifies OTP for the first time (i.e., no existing profile), require them to complete profile setup by collecting: mobile number, profile picture, and Gmail ID, then save it to the backend profile.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Jo sign up Karen vah apna profile setup Kar paye apna mobile number profile pic aur Gmail ID vagaira sab apna feel Kar paye"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If the user verifies OTP and no profile exists, the app prompts a profile setup flow instead of silently creating a \"complete\" profile.",
+        "Profile setup form includes fields for mobile number, Gmail ID, and profile picture upload/selection.",
+        "Submitting profile setup persists the values in the backend user profile (including photo).",
+        "If the user already has a profile, OTP verification logs them in without forcing profile setup again.",
+        "Validation errors from backend (e.g., invalid email format, invalid/duplicate mobile) are shown to the user in the profile setup UI."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Adjust backend user profile creation/update logic so a profile can exist in an incomplete state until the user completes profile setup (use the existing `profileComplete` flag appropriately).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "...profile setup... mobile number profile pic aur Gmail ID..."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend can store `profileComplete = false` for newly created profiles that are auto-created at OTP login time (if needed) and later be updated to `true` once the user submits full details.",
+        "Existing `createUserProfile` / `saveCallerUserProfile` flows support the profile setup UX without trapping unnecessarily for the common new-user path.",
+        "No state migration is introduced unless strictly required by compilation/state changes."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Fix/soften the OTP modal error experience shown as \"Service temporarily unavailable\" by adding an explicit retry action and clearer recovery guidance, without changing the OTP-only requirement.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10"
+        ],
+        "quotes": [
+          "Do it again"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the OTP modal shows the \"Service temporarily unavailable\" error, the user has a visible \"Retry\" button that re-attempts the last action (generate OTP or verify OTP as appropriate).",
+        "The OTP modal continues to display the existing error text when failures occur, but does not leave the user stuck without a next step.",
+        "Retry does not bypass any validation (e.g., still requires 10-digit mobile, 6-digit OTP)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Rename all user-facing occurrences of the brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" (triple 's'), including headings, toasts, alt text, and loading text.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "aur sari kar do Jo exam xpress hai uska naam Exam Xpresss kar do"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header brand text shows \"Exam Xpresss\".",
+        "Home page hero/title and other visible marketing text use \"Exam Xpresss\".",
+        "Login toasts/messages that reference the brand use \"Exam Xpresss\".",
+        "App loading text uses \"Exam Xpresss\".",
+        "No remaining visible strings say \"Exam Xpress\" (double-check common pages: Home, Header, Login modal)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Increase the writable/editable area height and spacing for the syllabus editor (Admin Panel \u0000 Syllabus) so long writing is fully visible while typing.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Baki syllabus mein itna space de do ki aadami jo likh raha hai vah dekh payegi kya likh raha hai theek hai kafi space de do usmein ki puri writing dikhe"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The topics input in Admin Panel \u0000 Syllabus uses a noticeably larger textarea (increased min-height) suitable for long multi-line editing.",
+        "The textarea has comfortable padding/line-height so typed lines are easy to read.",
+        "The change applies at least to the textarea with className `admin-syllabus-editor` in `frontend/src/pages/AdminPanel.tsx`."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in `backend/main.mo` (no additional backend services).",
+    "Do not edit files in `frontend/src/components/ui` or the immutable hook entrypoints listed in SYSTEM_CONTEXT.",
+    "User-facing text in the UI must be in English.",
+    "Keep authentication OTP-only from a user perspective (do not add other login methods in UI)."
+  ],
+  "nonGoals": [
+    "Adding third-party authentication providers (Google/Facebook/Auth0/etc.).",
+    "Adding WebSockets/real-time chat/notifications.",
+    "Changing syllabus display layout for end users on `SyllabusPage` (only the writing/editor space requested).",
+    "Rebranding or changing the logo image asset itself (text-only rename)."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

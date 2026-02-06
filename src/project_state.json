@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Exam-focused app (Exam Xpresss) with OTP-only login, signup/profile setup, and improved syllabus input UI.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-ensure-the-app-presents-clear-login-and-sign-up-options-to-users-but-both-must-use-the-same-mobile-otp-flow-no-additional-alternative-login-methods-exposed-in-the-ui",
+      "title": "Ensure the app presents clear \"Login\" and \"Sign up\" options to users, but both must use the same Mobile OTP flow (no additional/alternative login methods exposed in the UI).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-a-new-user-verifies-otp-for-the-first-time-i-e-no-existing-profile-require-them-to-complete-profile-setup-by-collecting-mobile-number-profile-picture-and-gmail-id-then-save-it-to-the-backend-profile",
+      "title": "After a new user verifies OTP for the first time (i.e., no existing profile), require them to complete profile setup by collecting: mobile number, profile picture, and Gmail ID, then save it to the backend profile.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-soften-the-otp-modal-error-experience-shown-as-service-temporarily-unavailable-by-adding-an-explicit-retry-action-and-clearer-recovery-guidance-without-changing-the-otp-only-requirement",
+      "title": "Fix/soften the OTP modal error experience shown as \"Service temporarily unavailable\" by adding an explicit retry action and clearer recovery guidance, without changing the OTP-only requirement.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rename-all-user-facing-occurrences-of-the-brand-text-from-exam-xpress-to-exactly-exam-xpresss-triple-s-including-headings-toasts-alt-text-and-loading-text",
+      "title": "Rename all user-facing occurrences of the brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" (triple 's'), including headings, toasts, alt text, and loading text.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-increase-the-writable-editable-area-height-and-spacing-for-the-syllabus-editor-admin-panel-syllabus-so-long-writing-is-fully-visible-while-typing",
+      "title": "Increase the writable/editable area height and spacing for the syllabus editor (Admin Panel \u0000 Syllabus) so long writing is fully visible while typing.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Keep Login and Signup options; allow users to create accounts and log in.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "On signup, allow profile setup including mobile number, profile picture, and Gmail ID fields.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement OTP-only login (remove/disable any other login methods).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Rename app/label from \"Exam xpress\" to \"Exam Xpresss\" (spelling with triple 's').",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Increase spacing/height in the syllabus writing area so the full text being typed remains visible.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Adjust backend user profile creation/update logic so a profile can exist in an incomplete state until the user completes profile setup (use the existing `profileComplete` flag appropriately).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Exam Xpresss",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

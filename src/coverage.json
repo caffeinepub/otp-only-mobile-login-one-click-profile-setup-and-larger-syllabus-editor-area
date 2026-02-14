@@ -1,121 +1,98 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T17:06:19.818Z",
+  "generatedAt": "2026-02-14T04:40:00.615Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 6,
-    "implemented": 5,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Ensure the app presents clear \"Login\" and \"Sign up\" options to users, but both must use the same Mobile OTP flow (no additional/alternative login methods exposed in the UI).",
+        "summary": "Update the global styling system to use only 1–2 premium brand colors across the site (for accents, buttons, highlights, gradients, icons, and rings), replacing the current multi-accent palette usage (teal/green/amber/pink/violet/cyan/orange/purple/etc.).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/components/SignupModal.tsx"
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js"
         ],
         "matchedFiles": [
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "After a new user verifies OTP for the first time (i.e., no existing profile), require them to complete profile setup by collecting: mobile number, profile picture, and Gmail ID, then save it to the backend profile.",
+        "summary": "Refactor the accent utility layer (frontend/src/utils/accents.ts) so it no longer rotates through many accent colors by route/subject/index, and instead exposes a small, fixed set of brand accent styles (max two) that components can use consistently.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/ProfileSetupModal.tsx",
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/utils/accents.ts",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/CoursesPage.tsx",
+          "frontend/src/pages/SyllabusPage.tsx",
+          "frontend/src/pages/MockTestsPage.tsx",
+          "frontend/src/pages/ProgressPage.tsx",
+          "frontend/src/pages/PaymentSuccess.tsx",
+          "frontend/src/pages/PaymentFailure.tsx",
+          "frontend/src/pages/ProfilePage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/ProfileSetupModal.tsx",
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/utils/accents.ts",
+          "frontend/src/pages/HomePage.tsx",
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/pages/CoursesPage.tsx",
+          "frontend/src/pages/SyllabusPage.tsx",
+          "frontend/src/pages/MockTestsPage.tsx",
+          "frontend/src/pages/ProgressPage.tsx",
+          "frontend/src/pages/PaymentSuccess.tsx",
+          "frontend/src/pages/PaymentFailure.tsx",
+          "frontend/src/pages/ProfilePage.tsx"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Adjust backend user profile creation/update logic so a profile can exist in an incomplete state until the user completes profile setup (use the existing `profileComplete` flag appropriately).",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Fix/soften the OTP modal error experience shown as \"Service temporarily unavailable\" by adding an explicit retry action and clearer recovery guidance, without changing the OTP-only requirement.",
+        "summary": "Update key UI components and pages that currently use multi-color gradients and mixed accent classes (e.g., Header, Footer, HomePage sections) to use a consistent 1–2 color premium theme, including removing multi-stop gradient text that blends multiple accent colors.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/hooks/useMobileAuth.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/hooks/useMobileAuth.ts"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Rename all user-facing occurrences of the brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" (triple 's'), including headings, toasts, alt text, and loading text.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
           "frontend/src/components/Header.tsx",
+          "frontend/src/components/Footer.tsx",
           "frontend/src/pages/HomePage.tsx",
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/components/Footer.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/components/LoginModal.tsx",
-          "frontend/src/components/Footer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-6",
-        "summary": "Increase the writable/editable area height and spacing for the syllabus editor (Admin Panel \u0000 Syllabus) so long writing is fully visible while typing.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/AdminPanel.tsx",
           "frontend/src/index.css"
         ],
         "matchedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/pages/HomePage.tsx",
           "frontend/src/index.css"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
     "frontend/src/components/Footer.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/components/LoginModal.tsx",
-    "frontend/src/components/ProfileSetupModal.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useMobileAuth.ts",
-    "frontend/src/hooks/useQueries.ts",
     "frontend/src/index.css",
+    "frontend/src/pages/CoursesPage.tsx",
     "frontend/src/pages/HomePage.tsx",
     "frontend/src/pages/MockTestsPage.tsx",
+    "frontend/src/pages/PaymentFailure.tsx",
+    "frontend/src/pages/PaymentSuccess.tsx",
+    "frontend/src/pages/ProfilePage.tsx",
     "frontend/src/pages/ProgressPage.tsx",
+    "frontend/src/pages/SyllabusPage.tsx",
+    "frontend/src/utils/accents.ts",
+    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

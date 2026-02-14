@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-ensure-the-app-presents-clear-login-and-sign-up-options-to-users-but-both-must-use-the-same-mobile-otp-flow-no-additional-alternative-login-methods-exposed-in-the-ui",
-      "featureTitle": "Ensure the app presents clear \"Login\" and \"Sign up\" options to users, but both must use the same Mobile OTP flow (no additional/alternative login methods exposed in the UI).",
+      "featureId": "feature-update-the-global-styling-system-to-use-only-1-2-premium-brand-colors-across-the-site-for-accents-buttons-highlights-gradients-icons-and-rings-replacing-the-current-multi-accent-palette-usage-teal-green-amber-pink-violet-cyan-orange-purple-etc",
+      "featureTitle": "Update the global styling system to use only 1–2 premium brand colors across the site (for accents, buttons, highlights, gradients, icons, and rings), replacing the current multi-accent palette usage (teal/green/amber/pink/violet/cyan/orange/purple/etc.).",
       "files": [
-        "frontend/src/components/Header.tsx",
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
       ],
       "components": [
         "authorization@4.0.0",
@@ -25,13 +25,20 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-after-a-new-user-verifies-otp-for-the-first-time-i-e-no-existing-profile-require-them-to-complete-profile-setup-by-collecting-mobile-number-profile-picture-and-gmail-id-then-save-it-to-the-backend-profile",
-      "featureTitle": "After a new user verifies OTP for the first time (i.e., no existing profile), require them to complete profile setup by collecting: mobile number, profile picture, and Gmail ID, then save it to the backend profile.",
+      "featureId": "feature-refactor-the-accent-utility-layer-frontend-src-utils-accents-ts-so-it-no-longer-rotates-through-many-accent-colors-by-route-subject-index-and-instead-exposes-a-small-fixed-set-of-brand-accent-styles-max-two-that-components-can-use-consistently",
+      "featureTitle": "Refactor the accent utility layer (frontend/src/utils/accents.ts) so it no longer rotates through many accent colors by route/subject/index, and instead exposes a small, fixed set of brand accent styles (max two) that components can use consistently.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/LoginModal.tsx",
-        "frontend/src/components/ProfileSetupModal.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/pages/CoursesPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/MockTestsPage.tsx",
+        "frontend/src/pages/PaymentFailure.tsx",
+        "frontend/src/pages/PaymentSuccess.tsx",
+        "frontend/src/pages/ProfilePage.tsx",
+        "frontend/src/pages/ProgressPage.tsx",
+        "frontend/src/pages/SyllabusPage.tsx",
+        "frontend/src/utils/accents.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -50,36 +57,12 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-fix-soften-the-otp-modal-error-experience-shown-as-service-temporarily-unavailable-by-adding-an-explicit-retry-action-and-clearer-recovery-guidance-without-changing-the-otp-only-requirement",
-      "featureTitle": "Fix/soften the OTP modal error experience shown as \"Service temporarily unavailable\" by adding an explicit retry action and clearer recovery guidance, without changing the OTP-only requirement.",
+      "featureId": "feature-update-key-ui-components-and-pages-that-currently-use-multi-color-gradients-and-mixed-accent-classes-e-g-header-footer-homepage-sections-to-use-a-consistent-1-2-color-premium-theme-including-removing-multi-stop-gradient-text-that-blends-multiple-accent-colors",
+      "featureTitle": "Update key UI components and pages that currently use multi-color gradients and mixed accent classes (e.g., Header, Footer, HomePage sections) to use a consistent 1–2 color premium theme, including removing multi-stop gradient text that blends multiple accent colors.",
       "files": [
-        "frontend/src/components/LoginModal.tsx",
-        "frontend/src/hooks/useMobileAuth.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "stripe@3.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "http-outcalls@3.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-rename-all-user-facing-occurrences-of-the-brand-text-from-exam-xpress-to-exactly-exam-xpresss-triple-s-including-headings-toasts-alt-text-and-loading-text",
-      "featureTitle": "Rename all user-facing occurrences of the brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" (triple 's'), including headings, toasts, alt text, and loading text.",
-      "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/Footer.tsx",
         "frontend/src/components/Header.tsx",
-        "frontend/src/components/LoginModal.tsx",
+        "frontend/src/index.css",
         "frontend/src/pages/HomePage.tsx"
       ],
       "components": [
@@ -94,29 +77,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-increase-the-writable-editable-area-height-and-spacing-for-the-syllabus-editor-admin-panel-syllabus-so-long-writing-is-fully-visible-while-typing",
-      "featureTitle": "Increase the writable/editable area height and spacing for the syllabus editor (Admin Panel \u0000 Syllabus) so long writing is fully visible while typing.",
-      "files": [
-        "frontend/src/index.css"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "stripe@3.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "http-outcalls@3.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
+        "REQ-3"
       ],
       "confidence": "high"
     }

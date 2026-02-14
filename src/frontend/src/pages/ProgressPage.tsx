@@ -6,6 +6,7 @@ import { Loader2, TrendingUp, Award, Target, Calendar } from 'lucide-react';
 import { useGetTestResults, useGetUserProgress } from '../hooks/useQueries';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { getMetricCardClasses, getChartColor, getBrandByIndex, getBrandClasses } from '../utils/accents';
 
 type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
 
@@ -30,58 +31,41 @@ const ProgressPage = memo(function ProgressPage({ onNavigate }: ProgressPageProp
     }));
   }, [testResults]);
 
-  const performanceMetrics = useMemo(() => {
-    if (!testResults || testResults.length === 0) {
-      return {
-        totalTests: 0,
-        averageScore: 0,
-        highestScore: 0,
-        lowestScore: 0,
-        improvementRate: 0,
-      };
-    }
-
-    const scores = testResults.map(r => Number(r.score));
-    const totalTests = testResults.length;
-    const averageScore = scores.reduce((a, b) => a + b, 0) / totalTests;
-    const highestScore = Math.max(...scores);
-    const lowestScore = Math.min(...scores);
+  const metrics = useMemo(() => {
+    if (!userProgress) return [];
     
-    let improvementRate = 0;
-    if (totalTests >= 2) {
-      const firstHalf = scores.slice(0, Math.floor(totalTests / 2));
-      const secondHalf = scores.slice(Math.floor(totalTests / 2));
-      const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
-      const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
-      improvementRate = ((secondAvg - firstAvg) / firstAvg) * 100;
-    }
-
-    return {
-      totalTests,
-      averageScore: Math.round(averageScore),
-      highestScore,
-      lowestScore,
-      improvementRate: Math.round(improvementRate),
-    };
-  }, [testResults]);
+    return [
+      {
+        title: 'Total Tests',
+        value: Number(userProgress.totalTests),
+        icon: Target,
+        description: 'Tests completed',
+      },
+      {
+        title: 'Average Score',
+        value: `${Number(userProgress.averageScore)}%`,
+        icon: Award,
+        description: 'Overall performance',
+      },
+      {
+        title: 'Best Score',
+        value: testResults.length > 0 ? `${Math.max(...testResults.map(r => Number(r.score)))}%` : '0%',
+        icon: TrendingUp,
+        description: 'Highest achievement',
+      },
+      {
+        title: 'Recent Activity',
+        value: testResults.length > 0 ? 'Active' : 'No tests',
+        icon: Calendar,
+        description: 'Last 7 days',
+      },
+    ];
+  }, [userProgress, testResults]);
 
   if (resultsLoading || progressLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-accent" />
-      </div>
-    );
-  }
-
-  if (!userPrincipal) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Authentication Required</CardTitle>
-            <CardDescription>Please log in to view your progress</CardDescription>
-          </CardHeader>
-        </Card>
+        <Loader2 className="h-12 w-12 animate-spin text-brand-blue" />
       </div>
     );
   }
@@ -89,63 +73,41 @@ const ProgressPage = memo(function ProgressPage({ onNavigate }: ProgressPageProp
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-blue-accent">Your Progress</h1>
+        <h1 className="text-3xl font-bold mb-2 text-brand-blue">Your Progress</h1>
         <p className="text-muted-foreground">Track your performance and improvement over time</p>
       </div>
 
+      {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tests</CardTitle>
-            <Target className="h-4 w-4 text-blue-accent" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-accent">{performanceMetrics.totalTests}</div>
-            <p className="text-xs text-muted-foreground mt-1">Tests completed</p>
-          </CardContent>
-        </Card>
+        {metrics.map((metric, index) => {
+          const Icon = metric.icon;
+          const cardClasses = getMetricCardClasses(index);
+          const color = getBrandByIndex(index);
+          const classes = getBrandClasses(color);
 
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-            <Award className="h-4 w-4 text-blue-accent" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-accent">{performanceMetrics.averageScore}%</div>
-            <Progress value={performanceMetrics.averageScore} className="mt-2" />
-          </CardContent>
-        </Card>
-
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Highest Score</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-500">{performanceMetrics.highestScore}%</div>
-            <p className="text-xs text-muted-foreground mt-1">Best performance</p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Improvement</CardTitle>
-            <Calendar className="h-4 w-4 text-blue-accent" />
-          </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${performanceMetrics.improvementRate >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-              {performanceMetrics.improvementRate > 0 ? '+' : ''}{performanceMetrics.improvementRate}%
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Over time</p>
-          </CardContent>
-        </Card>
+          return (
+            <Card key={index} className={cardClasses}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {metric.title}
+                </CardTitle>
+                <Icon className={`h-4 w-4 ${classes.text}`} />
+              </CardHeader>
+              <CardContent>
+                <div className={`text-2xl font-bold ${classes.text}`}>{metric.value}</div>
+                <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {chartData.length > 0 ? (
+      {/* Charts */}
+      {chartData.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardHeader>
-              <CardTitle>Score Trend</CardTitle>
+              <CardTitle className="text-brand-red">Score Trend</CardTitle>
               <CardDescription>Your performance over time</CardDescription>
             </CardHeader>
             <CardContent>
@@ -155,7 +117,12 @@ const ProgressPage = memo(function ProgressPage({ onNavigate }: ProgressPageProp
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="score" stroke="hsl(var(--blue-accent))" strokeWidth={2} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="score" 
+                    stroke={getChartColor(0)} 
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -163,8 +130,8 @@ const ProgressPage = memo(function ProgressPage({ onNavigate }: ProgressPageProp
 
           <Card>
             <CardHeader>
-              <CardTitle>Test Scores</CardTitle>
-              <CardDescription>Individual test performance</CardDescription>
+              <CardTitle className="text-brand-blue">Test Attempts</CardTitle>
+              <CardDescription>Number of attempts per test</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -173,49 +140,53 @@ const ProgressPage = memo(function ProgressPage({ onNavigate }: ProgressPageProp
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="score" fill="hsl(var(--blue-accent))" />
+                  <Bar dataKey="attempts" fill={getChartColor(1)} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>No Test Results Yet</CardTitle>
-            <CardDescription>Start taking mock tests to track your progress</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              You haven't completed any tests yet. Take your first mock test to start tracking your progress!
-            </p>
-          </CardContent>
-        </Card>
       )}
 
+      {/* Recent Results */}
       {testResults.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Recent Test Results</CardTitle>
+            <CardTitle className="text-brand-red">Recent Test Results</CardTitle>
             <CardDescription>Your latest test performances</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {testResults.slice(-5).reverse().map((result, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex-1">
-                    <p className="font-medium">Test ID: {result.testId}</p>
-                    <p className="text-sm text-muted-foreground">Attempts: {Number(result.attempts)}</p>
+              {testResults.slice(0, 5).map((result, index) => {
+                const color = getBrandByIndex(index);
+                const classes = getBrandClasses(color);
+                
+                return (
+                  <div key={index} className={`flex items-center justify-between p-4 rounded-lg border-l-4 ${classes.border} ${classes.bgSubtle}`}>
+                    <div className="flex items-center gap-4">
+                      <Badge className={`${classes.bgSubtle} ${classes.text} border ${classes.border}/30`}>
+                        Test #{index + 1}
+                      </Badge>
+                      <div>
+                        <p className="font-medium">Score: {Number(result.score)}%</p>
+                        <p className="text-sm text-muted-foreground">Attempts: {Number(result.attempts)}</p>
+                      </div>
+                    </div>
+                    <Progress value={Number(result.score)} className="w-32" />
                   </div>
-                  <Badge 
-                    variant={Number(result.score) >= 70 ? 'default' : Number(result.score) >= 50 ? 'secondary' : 'destructive'}
-                    className="text-lg px-4 py-2"
-                  >
-                    {Number(result.score)}%
-                  </Badge>
-                </div>
-              ))}
+                );
+              })}
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {testResults.length === 0 && (
+        <Card>
+          <CardContent className="py-12 text-center">
+            <TrendingUp className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <p className="text-lg text-muted-foreground mb-4">No test results yet</p>
+            <p className="text-sm text-muted-foreground">Start taking mock tests to track your progress</p>
           </CardContent>
         </Card>
       )}

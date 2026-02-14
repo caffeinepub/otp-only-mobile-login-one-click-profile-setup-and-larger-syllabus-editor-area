@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Video, Clock, Loader2 } from 'lucide-react';
 import type { Course } from '../backend';
+import { getSubjectAccent, getBrandClasses, getNumberedItemClasses, getBadgeClasses, getCardClasses, getAccordionTriggerClasses } from '../utils/accents';
 
 type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
 
@@ -20,7 +21,7 @@ const CoursesPage = memo(function CoursesPage({ onNavigate }: CoursesPageProps) 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <Loader2 className="h-12 w-12 animate-spin text-brand-blue" />
       </div>
     );
   }
@@ -28,7 +29,7 @@ const CoursesPage = memo(function CoursesPage({ onNavigate }: CoursesPageProps) 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Video Courses</h1>
+        <h1 className="text-3xl font-bold mb-2 text-brand-blue">Video Courses</h1>
         <p className="text-muted-foreground">Learn from comprehensive video lectures by expert teachers</p>
       </div>
 
@@ -41,18 +42,23 @@ const CoursesPage = memo(function CoursesPage({ onNavigate }: CoursesPageProps) 
         </Card>
       ) : (
         <div className="space-y-8">
-          {subjects.map((subject) => (
-            <div key={subject}>
-              <h2 className="text-2xl font-semibold mb-4">{subject}</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {courses
-                  .filter((course) => course.subject === subject)
-                  .map((course) => (
-                    <CourseCard key={course.id} course={course} />
-                  ))}
+          {subjects.map((subject) => {
+            const color = getSubjectAccent(subject);
+            const classes = getBrandClasses(color);
+            
+            return (
+              <div key={subject}>
+                <h2 className={`text-2xl font-semibold mb-4 ${classes.text}`}>{subject}</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {courses
+                    .filter((course) => course.subject === subject)
+                    .map((course) => (
+                      <CourseCard key={course.id} course={course} />
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
@@ -71,24 +77,30 @@ const CourseCard = memo(function CourseCard({ course }: CourseCardProps) {
   const hours = Math.floor(totalDuration / 3600);
   const minutes = Math.floor((totalDuration % 3600) / 60);
 
+  const color = getSubjectAccent(course.subject);
+  const classes = getBrandClasses(color);
+  const cardClasses = getCardClasses(color);
+  const badgeClasses = getBadgeClasses(color);
+  const accordionClasses = getAccordionTriggerClasses(color);
+
   return (
-    <Card>
+    <Card className={cardClasses}>
       <CardHeader>
         <div className="flex items-start justify-between mb-2">
-          <Badge variant="secondary">{course.subject}</Badge>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <Badge className={badgeClasses}>{course.subject}</Badge>
+          <div className={`flex items-center gap-1 text-sm ${classes.text}`}>
             <Clock className="h-4 w-4" />
             {hours > 0 && `${hours}h `}
             {minutes}m
           </div>
         </div>
-        <CardTitle>{course.title}</CardTitle>
+        <CardTitle className={classes.text}>{course.title}</CardTitle>
         <CardDescription>{course.description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="videos">
-            <AccordionTrigger>
+            <AccordionTrigger className={`${classes.text} ${accordionClasses}`}>
               <div className="flex items-center gap-2">
                 <Video className="h-4 w-4" />
                 <span>{course.videos.length} Video Lectures</span>
@@ -96,25 +108,34 @@ const CourseCard = memo(function CourseCard({ course }: CourseCardProps) {
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-2">
-                {course.videos.map((video, index) => (
-                  <div key={video.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-muted-foreground">#{index + 1}</span>
-                      <span className="text-sm">{video.title}</span>
+                {course.videos.map((video, index) => {
+                  const itemClasses = getNumberedItemClasses(index);
+                  
+                  return (
+                    <div 
+                      key={video.id} 
+                      className={`flex items-center justify-between p-3 bg-muted/50 rounded-lg ${itemClasses.borderLeft}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`text-sm font-bold px-2 py-1 rounded ${itemClasses.numberBg}`}>
+                          #{index + 1}
+                        </span>
+                        <span className="text-sm">{video.title}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          {Math.floor(Number(video.duration) / 60)}m
+                        </span>
+                        <video
+                          src={video.videoFile.getDirectURL()}
+                          controls
+                          preload="metadata"
+                          className="h-8 w-12 rounded object-cover cursor-pointer"
+                        />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
-                        {Math.floor(Number(video.duration) / 60)}m
-                      </span>
-                      <video
-                        src={video.videoFile.getDirectURL()}
-                        controls
-                        preload="metadata"
-                        className="h-8 w-12 rounded object-cover cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </AccordionContent>
           </AccordionItem>

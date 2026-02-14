@@ -1,202 +1,234 @@
-import { useMemo, useState } from 'react';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, GraduationCap, TrendingUp, Video, CheckCircle } from 'lucide-react';
-import { useGetSessionState } from '../hooks/useQueries';
-import LoginModal from '../components/LoginModal';
+import { Badge } from '@/components/ui/badge';
+import { BookOpen, Video, TrendingUp, Award, CheckCircle, ArrowRight } from 'lucide-react';
+import { getBrandClasses, getBrandByIndex } from '../utils/accents';
 
-type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'admin' | 'payment-success' | 'payment-failure';
+type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
 
 interface HomePageProps {
   onNavigate: (page: Page) => void;
+  onLoginClick: () => void;
+  isAuthenticated: boolean;
 }
 
-export default function HomePage({ onNavigate }: HomePageProps) {
-  const { data: sessionState } = useGetSessionState();
-  const isAuthenticated = sessionState?.isAuthenticated || false;
-  
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
+const HomePage = memo(function HomePage({ onNavigate, onLoginClick, isAuthenticated }: HomePageProps) {
+  const redClasses = getBrandClasses('red');
+  const blueClasses = getBrandClasses('blue');
 
-  const features = useMemo(() => [
+  const features = [
     {
-      icon: <BookOpen className="h-8 w-8 text-blue-accent" />,
+      icon: BookOpen,
       title: 'Mock Tests',
-      description: 'Subject-wise mock tests with detailed solutions and performance tracking',
+      description: 'Practice with comprehensive mock tests designed for CUET UG preparation',
       page: 'mock-tests' as Page,
+      color: 'red' as const,
     },
     {
-      icon: <Video className="h-8 w-8 text-blue-accent" />,
+      icon: Video,
       title: 'Video Courses',
-      description: 'Comprehensive video lectures by expert teachers for all CUET UG subjects',
+      description: 'Learn from expert teachers with detailed video lectures',
       page: 'courses' as Page,
+      color: 'blue' as const,
     },
     {
-      icon: <GraduationCap className="h-8 w-8 text-blue-accent" />,
-      title: 'Syllabus',
-      description: 'Complete and updated syllabus for all CUET UG subjects',
-      page: 'syllabus' as Page,
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-blue-accent" />,
-      title: 'Progress Tracker',
-      description: 'Track your daily progress, scores, and improvement over time',
+      icon: TrendingUp,
+      title: 'Track Progress',
+      description: 'Monitor your performance and identify areas for improvement',
       page: 'progress' as Page,
+      color: 'red' as const,
     },
-  ], []);
+    {
+      icon: Award,
+      title: 'Complete Syllabus',
+      description: 'Access the complete and updated CUET UG syllabus',
+      page: 'syllabus' as Page,
+      color: 'blue' as const,
+    },
+  ];
 
-  const benefits = useMemo(() => [
-    'Subject-wise organized content',
-    'Expert teacher video lectures',
-    'Detailed performance analysis',
-    'Regular mock tests',
-    'Complete syllabus coverage',
+  const benefits = [
+    'Comprehensive mock tests for all subjects',
+    'Expert video lectures and study materials',
+    'Detailed performance analytics',
+    'Updated syllabus and exam patterns',
+    'Affordable pricing for all students',
     'Mobile-friendly platform',
-  ], []);
-
-  const handleLoginSuccess = () => {
-    setShowLogin(false);
-    setShowSignup(false);
-  };
+  ];
 
   return (
     <div className="min-h-screen">
-      <section className="relative bg-gradient-to-br from-blue-accent/10 via-background to-blue-accent/5 py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center animate-fade-in">
-            <div className="flex justify-center mb-8">
-              <img 
-                src="/assets/IMG_20260121_194813_007.webp" 
-                alt="Exam Xpresss Logo" 
-                className="h-24 w-24 rounded-full shadow-blue-lg ring-4 ring-blue-accent/20" 
-              />
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-blue-accent leading-tight">
-              Exam Xpresss CUET UG
+      {/* Hero Section */}
+      <section className="section-bg-gradient-1 py-20 md:py-32">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge className={`mb-6 ${redClasses.bgSubtle} ${redClasses.text} border ${redClasses.border}/30`}>
+              CUET UG Preparation Platform
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-brand-red to-brand-blue bg-clip-text text-transparent">
+              Master CUET UG with ExamXpress
             </h1>
-            <p className="text-xl md:text-2xl text-blue-accent/80 font-semibold mb-6">
-              Your Complete CUET UG Preparation Platform
-            </p>
-            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Excel in your CUET UG exams with our comprehensive mock tests, expert video courses, and detailed progress tracking.
-            </p>
-            {!isAuthenticated && (
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  onClick={() => setShowLogin(true)}
-                  variant="outline"
-                  className="text-lg px-8 py-6 border-2 border-blue-accent text-blue-accent hover:bg-blue-accent/10 font-bold"
-                >
-                  Login
-                </Button>
-                <Button 
-                  size="lg" 
-                  onClick={() => setShowSignup(true)}
-                  className="text-lg px-8 py-6 shadow-premium-lg hover:shadow-premium-xl transition-all hover:scale-105 bg-red-primary hover:bg-red-dark font-bold"
-                >
-                  Sign up
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-blue-accent">Our Features</h2>
-          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto text-lg">
-            All the essential tools to make your CUET UG preparation successful
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="hover-lift cursor-pointer border-2 hover:border-blue-accent/50 transition-all animate-fade-in" 
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => isAuthenticated && onNavigate(feature.page)}
-              >
-                <CardHeader>
-                  <div className="mb-4 p-3 bg-blue-accent/10 rounded-lg w-fit">{feature.icon}</div>
-                  <CardTitle className="text-blue-accent">{feature.title}</CardTitle>
-                  <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
-                </CardHeader>
-                {isAuthenticated && (
-                  <CardContent>
-                    <Button variant="outline" className="w-full hover:bg-blue-accent hover:text-white transition-all border-blue-accent/30">
-                      View
-                    </Button>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-br from-muted/30 to-blue-accent/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-blue-accent">Why Choose Exam Xpresss?</h2>
-            <p className="text-center text-muted-foreground mb-16 text-lg">
-              We are committed to your success
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {benefits.map((benefit, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-center gap-3 p-5 bg-background rounded-lg shadow-premium hover-lift animate-fade-in"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <CheckCircle className="h-6 w-6 text-red-primary flex-shrink-0" />
-                  <span className="text-lg font-medium">{benefit}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {!isAuthenticated && (
-        <section className="py-20 bg-gradient-to-r from-blue-accent via-blue-accent/95 to-blue-accent/90 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your CUET UG Journey?</h2>
-            <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto leading-relaxed">
-              Join Exam Xpresss today and take the first step towards success
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Your complete preparation partner for CUET UG with mock tests, video courses, and comprehensive study materials
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                onClick={() => setShowLogin(true)}
-                variant="outline"
-                className="text-lg px-8 py-6 border-2 border-white text-white hover:bg-white/20 font-semibold"
-              >
-                Login
-              </Button>
-              <Button 
-                size="lg" 
-                onClick={() => setShowSignup(true)}
-                className="text-lg px-8 py-6 shadow-premium-lg hover:shadow-premium-xl transition-all hover:scale-105 font-semibold bg-red-primary hover:bg-red-dark text-white"
-              >
-                Sign up Now
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button
+                    size="lg"
+                    onClick={() => onNavigate('mock-tests')}
+                    className={`${redClasses.bg} hover:${redClasses.bg}/90 text-white text-lg px-8`}
+                  >
+                    Start Mock Test
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => onNavigate('courses')}
+                    className={`border-2 ${blueClasses.border} ${blueClasses.text} hover:${blueClasses.bgSubtle} text-lg px-8`}
+                  >
+                    Browse Courses
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    size="lg"
+                    onClick={onLoginClick}
+                    className={`${redClasses.bg} hover:${redClasses.bg}/90 text-white text-lg px-8`}
+                  >
+                    Get Started
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => onNavigate('syllabus')}
+                    className={`border-2 ${blueClasses.border} ${blueClasses.text} hover:${blueClasses.bgSubtle} text-lg px-8`}
+                  >
+                    View Syllabus
+                  </Button>
+                </>
+              )}
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* Both Login and Sign up open the same OTP modal */}
-      <LoginModal 
-        open={showLogin || showSignup} 
-        onClose={() => {
-          setShowLogin(false);
-          setShowSignup(false);
-        }}
-        onSuccess={handleLoginSuccess}
-      />
+      {/* Features Section */}
+      <section className="section-bg-gradient-2 py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-red">
+              Everything You Need to Succeed
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive tools and resources designed to help you excel in CUET UG
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, index) => {
+              const classes = getBrandClasses(feature.color);
+              const Icon = feature.icon;
+
+              return (
+                <Card
+                  key={index}
+                  className={`border-l-4 ${classes.border} hover:${classes.bgSubtle} transition-all hover:shadow-lg cursor-pointer`}
+                  onClick={() => onNavigate(feature.page)}
+                >
+                  <CardHeader>
+                    <div className={`h-12 w-12 rounded-lg ${classes.bgSubtle} flex items-center justify-center mb-4`}>
+                      <Icon className={`h-6 w-6 ${classes.text}`} />
+                    </div>
+                    <CardTitle className={classes.text}>{feature.title}</CardTitle>
+                    <CardDescription>{feature.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="ghost" className={`w-full ${classes.text} ${classes.hoverBg}`}>
+                      Explore
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="section-bg-gradient-3 py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-blue">
+                Why Choose ExamXpress?
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Join thousands of students preparing for CUET UG with our platform
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {benefits.map((benefit, index) => {
+                const color = getBrandByIndex(index);
+                const classes = getBrandClasses(color);
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-start gap-3 p-4 rounded-lg ${classes.bgSubtle} border ${classes.border}/30`}
+                  >
+                    <CheckCircle className={`h-6 w-6 ${classes.text} flex-shrink-0 mt-0.5`} />
+                    <span className="text-foreground">{benefit}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section-bg-gradient-4 py-20">
+        <div className="container mx-auto px-4">
+          <Card className={`max-w-4xl mx-auto border-2 ${redClasses.border} ${redClasses.bgSubtle}`}>
+            <CardContent className="p-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-red">
+                Ready to Start Your CUET UG Journey?
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Join ExamXpress today and get access to comprehensive study materials, mock tests, and expert guidance
+              </p>
+              {isAuthenticated ? (
+                <Button
+                  size="lg"
+                  onClick={() => onNavigate('mock-tests')}
+                  className={`${redClasses.bg} hover:${redClasses.bg}/90 text-white text-lg px-8`}
+                >
+                  Start Practicing Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  onClick={onLoginClick}
+                  className={`${redClasses.bg} hover:${redClasses.bg}/90 text-white text-lg px-8`}
+                >
+                  Get Started for Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </div>
   );
-}
+});
+
+export default HomePage;

@@ -5,75 +5,75 @@
 @layer base {
   :root {
     /* Red-Blue Premium Theme - Light Mode */
-    --background: oklch(98% 0.01 240);
-    --foreground: oklch(20% 0.02 240);
-    --card: oklch(100% 0 0);
-    --card-foreground: oklch(20% 0.02 240);
-    --popover: oklch(100% 0 0);
-    --popover-foreground: oklch(20% 0.02 240);
-    --primary: oklch(45% 0.18 25);
-    --primary-foreground: oklch(98% 0.01 25);
-    --secondary: oklch(96% 0.01 240);
-    --secondary-foreground: oklch(20% 0.02 240);
-    --muted: oklch(96% 0.01 240);
-    --muted-foreground: oklch(50% 0.02 240);
-    --accent: oklch(96% 0.01 240);
-    --accent-foreground: oklch(20% 0.02 240);
-    --destructive: oklch(55% 0.22 25);
-    --destructive-foreground: oklch(98% 0.01 25);
-    --border: oklch(90% 0.01 240);
-    --input: oklch(90% 0.01 240);
-    --ring: oklch(45% 0.18 25);
+    --background: 98% 0.01 240;
+    --foreground: 20% 0.02 240;
+    --card: 100% 0 0;
+    --card-foreground: 20% 0.02 240;
+    --popover: 100% 0 0;
+    --popover-foreground: 20% 0.02 240;
+    --primary: 45% 0.18 25;
+    --primary-foreground: 98% 0.01 25;
+    --secondary: 96% 0.01 240;
+    --secondary-foreground: 20% 0.02 240;
+    --muted: 96% 0.01 240;
+    --muted-foreground: 50% 0.02 240;
+    --accent: 96% 0.01 240;
+    --accent-foreground: 20% 0.02 240;
+    --destructive: 55% 0.22 25;
+    --destructive-foreground: 98% 0.01 25;
+    --border: 90% 0.01 240;
+    --input: 90% 0.01 240;
+    --ring: 45% 0.18 25;
     --radius: 0.5rem;
-    --chart-1: oklch(60% 0.15 220);
-    --chart-2: oklch(70% 0.12 160);
-    --chart-3: oklch(65% 0.14 30);
-    --chart-4: oklch(75% 0.10 280);
-    --chart-5: oklch(68% 0.13 340);
+    --chart-1: 45% 0.18 25;
+    --chart-2: 50% 0.15 240;
+    --chart-3: 55% 0.20 25;
+    --chart-4: 55% 0.13 240;
+    --chart-5: 40% 0.16 25;
 
-    /* Custom Red-Blue Colors */
-    --red-primary: oklch(55% 0.22 25);
-    --red-dark: oklch(45% 0.20 25);
-    --red-light: oklch(75% 0.15 25);
-    --blue-accent: oklch(50% 0.15 240);
-    --blue-dark: oklch(35% 0.12 240);
-    --blue-light: oklch(70% 0.12 240);
+    /* Brand Colors - Red Primary & Blue Accent */
+    --brand-red: 55% 0.22 25;
+    --brand-red-dark: 45% 0.20 25;
+    --brand-red-light: 75% 0.15 25;
+    --brand-blue: 50% 0.15 240;
+    --brand-blue-dark: 35% 0.12 240;
+    --brand-blue-light: 70% 0.12 240;
   }
 
   .dark {
     /* Red-Blue Premium Theme - Dark Mode */
-    --background: oklch(15% 0.02 240);
-    --foreground: oklch(95% 0.01 240);
-    --card: oklch(18% 0.02 240);
-    --card-foreground: oklch(95% 0.01 240);
-    --popover: oklch(18% 0.02 240);
-    --popover-foreground: oklch(95% 0.01 240);
-    --primary: oklch(60% 0.20 25);
-    --primary-foreground: oklch(15% 0.02 25);
-    --secondary: oklch(25% 0.02 240);
-    --secondary-foreground: oklch(95% 0.01 240);
-    --muted: oklch(25% 0.02 240);
-    --muted-foreground: oklch(65% 0.02 240);
-    --accent: oklch(25% 0.02 240);
-    --accent-foreground: oklch(95% 0.01 240);
-    --destructive: oklch(60% 0.22 25);
-    --destructive-foreground: oklch(95% 0.01 25);
-    --border: oklch(30% 0.02 240);
-    --input: oklch(30% 0.02 240);
-    --ring: oklch(60% 0.20 25);
-    --chart-1: oklch(65% 0.15 220);
-    --chart-2: oklch(75% 0.12 160);
-    --chart-3: oklch(70% 0.14 30);
-    --chart-4: oklch(80% 0.10 280);
-    --chart-5: oklch(73% 0.13 340);
+    --background: 15% 0.02 240;
+    --foreground: 95% 0.01 240;
+    --card: 18% 0.02 240;
+    --card-foreground: 95% 0.01 240;
+    --popover: 18% 0.02 240;
+    --popover-foreground: 95% 0.01 240;
+    --primary: 60% 0.20 25;
+    --primary-foreground: 15% 0.02 25;
+    --secondary: 25% 0.02 240;
+    --secondary-foreground: 95% 0.01 240;
+    --muted: 25% 0.02 240;
+    --muted-foreground: 65% 0.02 240;
+    --accent: 25% 0.02 240;
+    --accent-foreground: 95% 0.01 240;
+    --destructive: 60% 0.22 25;
+    --destructive-foreground: 95% 0.01 25;
+    --border: 30% 0.02 240;
+    --input: 30% 0.02 240;
+    --ring: 60% 0.20 25;
+    --chart-1: 60% 0.20 25;
+    --chart-2: 60% 0.15 240;
+    --chart-3: 65% 0.22 25;
+    --chart-4: 65% 0.13 240;
+    --chart-5: 55% 0.18 25;
 
-    /* Custom Red-Blue Colors - Dark Mode */
-    --red-primary: oklch(60% 0.22 25);
-    --red-dark: oklch(50% 0.20 25);
-    --red-light: oklch(75% 0.15 25);
-    --blue-accent: oklch(60% 0.15 240);
-    --blue-dark: oklch(45% 0.12 240);
-    --blue-light: oklch(75% 0.12 240);
+    /* Brand Colors - Dark Mode */
+    --brand-red: 60% 0.22 25;
+    --brand-red-dark: 50% 0.20 25;
+    --brand-red-light: 75% 0.15 25;
+    --brand-blue: 60% 0.15 240;
+    --brand-blue-dark: 45% 0.12 240;
+    --brand-blue-light: 75% 0.12 240;
   }
 }
 
@@ -147,5 +147,58 @@
     line-height: 1.875;
     padding: 1.75rem;
     letter-spacing: 0.01em;
+  }
+
+  /* Section Accent Utilities */
+  .section-accent {
+    @apply relative overflow-hidden;
+  }
+
+  .section-accent::before {
+    content: '';
+    @apply absolute inset-0 opacity-5 pointer-events-none;
+    background: radial-gradient(circle at top right, currentColor 0%, transparent 70%);
+  }
+
+  /* Brand Section Backgrounds - Red & Blue Only */
+  .section-bg-gradient-1 {
+    background: linear-gradient(to bottom right, 
+      oklch(55% 0.22 25 / 0.08), 
+      oklch(var(--background)), 
+      oklch(50% 0.15 240 / 0.08)
+    );
+  }
+
+  .section-bg-gradient-2 {
+    background: linear-gradient(to bottom right, 
+      oklch(50% 0.15 240 / 0.08), 
+      oklch(var(--background)), 
+      oklch(55% 0.22 25 / 0.08)
+    );
+  }
+
+  .section-bg-gradient-3 {
+    background: linear-gradient(to bottom right, 
+      oklch(55% 0.22 25 / 0.06), 
+      oklch(var(--background)), 
+      oklch(50% 0.15 240 / 0.06)
+    );
+  }
+
+  .section-bg-gradient-4 {
+    background: linear-gradient(to bottom right, 
+      oklch(50% 0.15 240 / 0.06), 
+      oklch(var(--background)), 
+      oklch(55% 0.22 25 / 0.06)
+    );
+  }
+
+  /* Brand Border Gradient */
+  .border-accent-gradient {
+    @apply relative;
+    background: linear-gradient(to right, 
+      oklch(55% 0.22 25), 
+      oklch(50% 0.15 240)
+    );
   }
 }

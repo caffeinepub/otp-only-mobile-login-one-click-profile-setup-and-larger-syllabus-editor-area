@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Smartphone, AlertCircle, RefreshCw } from 'lucide-react';
+import { Loader2, Smartphone, AlertCircle, RefreshCw, Wifi } from 'lucide-react';
 import { useMobileAuth } from '../hooks/useMobileAuth';
 import { toast } from 'sonner';
 
@@ -14,7 +14,7 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps) {
-  const { sendOTP, verifyOTP, isLoading, error, otpSent, generatedOtp, isAwaitingII } = useMobileAuth();
+  const { sendOTP, verifyOTP, isLoading, error, otpSent, generatedOtp, connectionStatus } = useMobileAuth();
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
   const [countdown, setCountdown] = useState(0);
@@ -62,30 +62,48 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
 
   const handleRetry = () => {
     if (!otpSent) {
-      // Retry generate OTP
       if (mobile.length === 10) {
         handleSendOTP();
       }
     } else {
-      // Retry verify OTP
       if (otp.length === 6) {
         handleVerifyOTP();
       }
     }
   };
 
-  const isServiceError = error?.includes('Service temporarily unavailable') || error?.includes('SERVICE_UNAVAILABLE');
+  // Determine if we're in a connecting/authenticating state
+  const isConnecting = connectionStatus === 'connecting' || connectionStatus === 'authenticating' || connectionStatus === 'initializing';
+  
+  // Only show service error for real connection failures
+  const isServiceError = connectionStatus === 'error' || error?.includes('timed out') || error?.includes('Connection failed');
+
+  // Get appropriate status message
+  const getStatusMessage = () => {
+    switch (connectionStatus) {
+      case 'initializing':
+        return 'Initializing...';
+      case 'authenticating':
+        return 'Completing authentication...';
+      case 'connecting':
+        return 'Connecting to service...';
+      default:
+        return null;
+    }
+  };
+
+  const statusMessage = getStatusMessage();
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex justify-center mb-4">
-            <div className="p-4 bg-blue-accent/10 rounded-full">
-              <Smartphone className="h-10 w-10 text-blue-accent" />
+            <div className="p-4 bg-gradient-to-br from-accent-violet/20 to-accent-pink/20 rounded-full">
+              <Smartphone className="h-10 w-10 text-accent-violet" />
             </div>
           </div>
-          <DialogTitle className="text-center text-2xl font-bold text-blue-accent">
+          <DialogTitle className="text-center text-2xl font-bold bg-gradient-to-r from-accent-violet to-accent-pink bg-clip-text text-transparent">
             Welcome
           </DialogTitle>
           <DialogDescription className="text-center text-base">
@@ -94,15 +112,28 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          {error && (
-            <div className="p-4 bg-red-primary/10 border border-red-primary/30 rounded-lg">
+          {/* Connection status indicator */}
+          {statusMessage && (
+            <div className="p-4 bg-accent-violet/10 border border-accent-violet/30 rounded-lg">
+              <div className="flex items-center gap-3">
+                <Loader2 className="h-5 w-5 text-accent-violet animate-spin flex-shrink-0" />
+                <p className="text-sm text-accent-violet font-medium">
+                  {statusMessage}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Error banner - only for real errors */}
+          {error && !isConnecting && (
+            <div className="p-4 bg-accent-red/10 border border-accent-red/30 rounded-lg">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-red-primary flex-shrink-0 mt-0.5" />
+                <AlertCircle className="h-5 w-5 text-accent-red flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-sm text-red-primary font-medium">{error}</p>
+                  <p className="text-sm text-accent-red font-medium">{error}</p>
                   {isServiceError && (
                     <p className="text-xs text-muted-foreground mt-1">
-                      Please refresh the page and try again in a moment.
+                      Please check your connection and try again.
                     </p>
                   )}
                 </div>
@@ -110,21 +141,10 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
             </div>
           )}
 
-          {isAwaitingII && (
-            <div className="p-4 bg-blue-accent/10 border border-blue-accent/30 rounded-lg">
-              <div className="flex items-center gap-3">
-                <Loader2 className="h-5 w-5 text-blue-accent animate-spin" />
-                <p className="text-sm text-blue-accent font-medium">
-                  Completing authentication...
-                </p>
-              </div>
-            </div>
-          )}
-
           {!otpSent ? (
             <>
               <div className="space-y-2">
-                <Label htmlFor="mobile" className="text-base font-semibold text-blue-accent">
+                <Label htmlFor="mobile" className="text-base font-semibold text-accent-violet">
                   Mobile Number
                 </Label>
                 <div className="relative">
@@ -138,8 +158,8 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                     placeholder="9455134315"
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                    className="pl-20 text-base h-12 border-2 focus:border-blue-accent"
-                    disabled={isLoading}
+                    className="pl-20 text-base h-12 border-2 focus:border-accent-violet"
+                    disabled={isLoading || isConnecting}
                     maxLength={10}
                   />
                 </div>
@@ -150,25 +170,25 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
 
               <Button
                 onClick={handleSendOTP}
-                disabled={isLoading || mobile.length !== 10}
-                className="w-full h-12 text-base font-bold bg-red-primary hover:bg-red-dark shadow-premium-lg"
+                disabled={isLoading || isConnecting || mobile.length !== 10}
+                className="w-full h-12 text-base font-bold bg-gradient-to-r from-accent-violet to-accent-pink hover:from-accent-violet/90 hover:to-accent-pink/90 text-white shadow-accent-violet"
               >
-                {isLoading ? (
+                {isLoading || isConnecting ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Sending OTP...
+                    {statusMessage || 'Processing...'}
                   </>
                 ) : (
                   'Continue'
                 )}
               </Button>
 
-              {isServiceError && (
+              {isServiceError && !isConnecting && (
                 <Button
                   onClick={handleRetry}
-                  disabled={isLoading || mobile.length !== 10}
+                  disabled={isLoading || isConnecting || mobile.length !== 10}
                   variant="outline"
-                  className="w-full h-12 text-base font-semibold border-2 border-blue-accent text-blue-accent hover:bg-blue-accent/10"
+                  className="w-full h-12 text-base font-semibold border-2 border-accent-violet text-accent-violet hover:bg-accent-violet/10"
                 >
                   <RefreshCw className="mr-2 h-5 w-5" />
                   Retry
@@ -178,9 +198,9 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
           ) : (
             <>
               {generatedOtp && (
-                <div className="p-4 bg-blue-accent/10 border-2 border-blue-accent rounded-lg">
+                <div className="p-4 bg-gradient-to-br from-accent-violet/10 to-accent-pink/10 border-2 border-accent-violet rounded-lg">
                   <p className="text-sm text-muted-foreground mb-2 text-center">Your OTP Code:</p>
-                  <p className="text-3xl font-bold text-blue-accent text-center tracking-wider">
+                  <p className="text-3xl font-bold text-accent-violet text-center tracking-wider">
                     {generatedOtp}
                   </p>
                   <p className="text-xs text-muted-foreground mt-2 text-center">
@@ -190,7 +210,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="otp" className="text-base font-semibold text-blue-accent">
+                <Label htmlFor="otp" className="text-base font-semibold text-accent-violet">
                   Enter OTP
                 </Label>
                 <Input
@@ -199,60 +219,54 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                   placeholder="Enter 6-digit OTP"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="text-center text-2xl tracking-widest font-bold h-14 border-2 focus:border-blue-accent"
-                  disabled={isLoading}
+                  className="text-center text-2xl tracking-widest h-14 border-2 focus:border-accent-violet font-bold"
+                  disabled={isLoading || isConnecting}
                   maxLength={6}
                 />
+                <p className="text-xs text-muted-foreground text-center">
+                  Enter the 6-digit OTP shown above
+                </p>
               </div>
 
               <Button
                 onClick={handleVerifyOTP}
-                disabled={isLoading || otp.length !== 6}
-                className="w-full h-12 text-base font-bold bg-red-primary hover:bg-red-dark shadow-premium-lg"
+                disabled={isLoading || isConnecting || otp.length !== 6 || countdown === 0}
+                className="w-full h-12 text-base font-bold bg-gradient-to-r from-accent-violet to-accent-pink hover:from-accent-violet/90 hover:to-accent-pink/90 text-white shadow-accent-violet"
               >
-                {isLoading ? (
+                {isLoading || isConnecting ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Verifying...
+                    {statusMessage || 'Verifying...'}
                   </>
                 ) : (
-                  'Verify & Continue'
+                  'Verify OTP'
                 )}
               </Button>
 
-              {isServiceError && (
+              {isServiceError && !isConnecting && (
                 <Button
                   onClick={handleRetry}
-                  disabled={isLoading || otp.length !== 6}
+                  disabled={isLoading || isConnecting || otp.length !== 6}
                   variant="outline"
-                  className="w-full h-12 text-base font-semibold border-2 border-blue-accent text-blue-accent hover:bg-blue-accent/10"
+                  className="w-full h-12 text-base font-semibold border-2 border-accent-violet text-accent-violet hover:bg-accent-violet/10"
                 >
                   <RefreshCw className="mr-2 h-5 w-5" />
                   Retry
                 </Button>
               )}
 
-              <div className="flex items-center justify-between text-sm">
-                <button
-                  onClick={() => {
-                    setOtp('');
-                    setMobile('');
-                  }}
-                  className="text-blue-accent hover:underline font-medium"
-                  disabled={isLoading}
-                >
-                  Change Number
-                </button>
-                {countdown === 0 && (
-                  <button
-                    onClick={handleSendOTP}
-                    className="text-blue-accent hover:underline font-medium"
-                    disabled={isLoading}
-                  >
-                    Resend OTP
-                  </button>
-                )}
-              </div>
+              <Button
+                onClick={() => {
+                  setOtp('');
+                  setMobile('');
+                  setCountdown(0);
+                }}
+                variant="ghost"
+                className="w-full text-sm text-muted-foreground hover:text-accent-violet"
+                disabled={isLoading || isConnecting}
+              >
+                Change mobile number
+              </Button>
             </>
           )}
         </div>

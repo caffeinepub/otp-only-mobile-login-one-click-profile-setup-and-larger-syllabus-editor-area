@@ -102,11 +102,12 @@ class ErrorBoundary extends Component<
 }
 
 function AppContent() {
-  const { identity, isInitializing } = useInternetIdentity();
+  const { identity, isInitializing, login } = useInternetIdentity();
   
   // Critical: Use backend session state for authentication instead of Internet Identity
   const { data: sessionState, isLoading: sessionLoading } = useGetSessionState();
   const isAuthenticated = sessionState?.isAuthenticated || false;
+  const isAdmin = sessionState?.role === 'admin';
   
   // Profile setup modal: show when authenticated but profile is missing or incomplete
   const { data: userProfile, isLoading: profileLoading, isFetched: profileFetched } = useGetCallerUserProfile();
@@ -129,6 +130,14 @@ function AppContent() {
       console.error('Failed to save page to sessionStorage:', error);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLoginClick = async () => {
+    try {
+      await login();
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   useEffect(() => {
@@ -158,7 +167,7 @@ function AppContent() {
     try {
       switch (currentPage) {
         case 'home':
-          return <HomePage onNavigate={handleNavigate} />;
+          return <HomePage onNavigate={handleNavigate} onLoginClick={handleLoginClick} isAuthenticated={isAuthenticated} />;
         case 'mock-tests':
           return <MockTestsPage onNavigate={handleNavigate} />;
         case 'courses':
@@ -176,7 +185,7 @@ function AppContent() {
         case 'payment-failure':
           return <PaymentFailure onNavigate={handleNavigate} />;
         default:
-          return <HomePage onNavigate={handleNavigate} />;
+          return <HomePage onNavigate={handleNavigate} onLoginClick={handleLoginClick} isAuthenticated={isAuthenticated} />;
       }
     } catch (error) {
       console.error('Error rendering page:', error);
@@ -201,7 +210,12 @@ function AppContent() {
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
-        <Header currentPage={currentPage} onNavigate={handleNavigate} />
+        <Header 
+          currentPage={currentPage} 
+          onNavigate={handleNavigate} 
+          onLoginClick={handleLoginClick}
+          isAdmin={isAdmin}
+        />
         <main className="flex-1">
           <ErrorBoundary
             fallback={
@@ -226,7 +240,7 @@ function AppContent() {
             </Suspense>
           </ErrorBoundary>
         </main>
-        <Footer />
+        <Footer onNavigate={handleNavigate} />
         <Toaster position="top-right" richColors closeButton />
         
         {/* Profile Setup Modal - shown when authenticated but profile incomplete */}

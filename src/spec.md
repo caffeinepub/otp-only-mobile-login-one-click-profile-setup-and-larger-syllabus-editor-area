@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Keep authentication OTP-only while offering clear Login/Sign up entry points, require first-time users to complete profile setup, rename the app to “Exam Xpresss”, improve OTP error recovery, and make the Admin syllabus editor easier to write in.
+**Goal:** Simplify the site’s visual theme to a consistent premium look by using only 1–2 brand accent colors (plus neutrals) across all pages and components.
 
 **Planned changes:**
-- Show both “Login” and “Sign up” options when logged out, but route both into the same Mobile OTP flow (no other auth UI paths).
-- After first OTP verification for users without an existing profile, prompt a profile setup flow to collect mobile number, Gmail ID, and profile picture; persist these to the backend and respect the `profileComplete` flag (allow incomplete profiles until completed).
-- Improve the OTP modal “Service temporarily unavailable” state with a visible “Retry” action that re-attempts the last OTP step (generate or verify) and provides clearer recovery guidance.
-- Rename all user-facing text from “Exam Xpress” to exactly “Exam Xpresss” (triple “s”) across the app UI strings.
-- Increase the height and readability (spacing/padding/line-height) of the Admin Panel → Syllabus topics editor textarea (including the `admin-syllabus-editor` textarea in `frontend/src/pages/AdminPanel.tsx`).
+- Update global styling usage so accents (buttons, highlights, gradients, icons, rings, badges, borders, and accent text) use at most two fixed brand colors, removing the current multi-accent palette usage.
+- Refactor `frontend/src/utils/accents.ts` to stop rotating/deriving accents by route/subject/index and instead expose a small fixed set (max two) of brand accent styles for consistent reuse.
+- Update key UI areas that currently mix multiple accent colors and multi-stop gradients (e.g., Header, Footer, Home page hero/sections) to use only the chosen 1–2 brand colors, including removing multi-color gradient text.
 
-**User-visible outcome:** Users can choose Login or Sign up but always complete OTP-only authentication; first-time users are guided through a required profile setup (mobile, Gmail, photo); OTP failures provide a retry path; the app displays “Exam Xpresss” everywhere; and admins can comfortably write long syllabus content in a larger editor.
+**User-visible outcome:** The entire site appears visually consistent with a premium theme using only 1–2 accent colors in both light and dark mode, without any leftover multi-accent styling or broken classes.

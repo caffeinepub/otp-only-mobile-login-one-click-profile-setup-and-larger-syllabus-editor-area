@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BookOpen, Clock, IndianRupee, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { MockTest, ShoppingItem } from '../backend';
+import { getSubjectAccent, getBrandClasses, getTabTriggerClasses, getCardClasses, getBadgeClasses, getButtonClasses } from '../utils/accents';
 
 type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
 
@@ -58,7 +59,7 @@ const MockTestsPage = memo(function MockTestsPage({ onNavigate }: MockTestsPageP
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <Loader2 className="h-12 w-12 animate-spin text-brand-red" />
       </div>
     );
   }
@@ -66,7 +67,7 @@ const MockTestsPage = memo(function MockTestsPage({ onNavigate }: MockTestsPageP
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Mock Tests</h1>
+        <h1 className="text-3xl font-bold mb-2 text-brand-red">Mock Tests</h1>
         <p className="text-muted-foreground">Practice with subject-wise mock tests and track your performance</p>
       </div>
 
@@ -79,13 +80,22 @@ const MockTestsPage = memo(function MockTestsPage({ onNavigate }: MockTestsPageP
         </Card>
       ) : (
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="all">All Tests</TabsTrigger>
-            {subjects.map((subject) => (
-              <TabsTrigger key={subject} value={subject}>
-                {subject}
-              </TabsTrigger>
-            ))}
+          <TabsList className="mb-6 flex-wrap h-auto">
+            <TabsTrigger value="all" className="data-[state=active]:bg-brand-red/10 data-[state=active]:text-brand-red">
+              All Tests
+            </TabsTrigger>
+            {subjects.map((subject) => {
+              const color = getSubjectAccent(subject);
+              return (
+                <TabsTrigger 
+                  key={subject} 
+                  value={subject}
+                  className={getTabTriggerClasses(color)}
+                >
+                  {subject}
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
 
           <TabsContent value="all">
@@ -130,33 +140,43 @@ interface MockTestCardProps {
 }
 
 const MockTestCard = memo(function MockTestCard({ test, onPurchase, isPurchasing }: MockTestCardProps) {
+  const color = getSubjectAccent(test.subject);
+  const classes = getBrandClasses(color);
+  const cardClasses = getCardClasses(color);
+  const badgeClasses = getBadgeClasses(color);
+  const buttonClasses = getButtonClasses(color);
+  
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className={cardClasses}>
       <CardHeader>
         <div className="flex items-start justify-between mb-2">
-          <Badge variant="secondary">{test.subject}</Badge>
-          <div className="flex items-center gap-1 text-primary font-semibold">
+          <Badge className={badgeClasses}>{test.subject}</Badge>
+          <div className={`flex items-center gap-1 ${classes.text} font-semibold`}>
             <IndianRupee className="h-4 w-4" />
             {Number(test.price) / 100}
           </div>
         </div>
-        <CardTitle className="text-xl">{test.subject} Mock Test</CardTitle>
+        <CardTitle className={`text-xl ${classes.text}`}>{test.subject} Mock Test</CardTitle>
         <CardDescription>Complete practice test with detailed solutions</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className={`flex items-center gap-2 text-sm ${classes.text}`}>
             <BookOpen className="h-4 w-4" />
             <span>{test.questions.length} Questions</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className={`flex items-center gap-2 text-sm ${classes.text}`}>
             <Clock className="h-4 w-4" />
             <span>Estimated time: {test.questions.length * 2} minutes</span>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={() => onPurchase(test)} disabled={isPurchasing}>
+        <Button 
+          className={`w-full ${buttonClasses}`}
+          onClick={() => onPurchase(test)} 
+          disabled={isPurchasing}
+        >
           {isPurchasing ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

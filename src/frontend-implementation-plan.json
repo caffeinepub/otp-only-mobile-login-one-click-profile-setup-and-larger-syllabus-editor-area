@@ -1,145 +1,123 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "OTP-only auth entry points, first-login profile setup, brand rename to Exam Xpresss, and improved OTP + syllabus editor UX",
+  "title": "Simplify site theme to a consistent 1–2 premium brand colors",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Expose clear \"Login\" and \"Sign up\" entry points that both launch the same Mobile OTP flow, and remove deprecated signup notice from navigation.",
+      "summary": "Consolidate global theme tokens and utilities so the site uses only 1–2 brand accent colors (plus neutrals) across light/dark mode.",
       "acceptanceCriteria": [
-        "When logged out, the UI shows both \"Login\" and \"Sign up\" entry points.",
-        "Clicking either entry point opens the Mobile OTP modal/flow.",
-        "No separate username/password, Google, or other non-OTP login UI is present.",
-        "Existing deprecated SignupModal notice is no longer reachable from user navigation."
+        "Across all pages/components, accent styling is limited to a maximum of two brand colors (plus neutrals like background/foreground/muted/border).",
+        "No UI elements (text, borders, rings, icons, buttons, badges, gradients) rely on the rotating accent palette or subject/route-based accent variety.",
+        "Light and dark mode remain readable with sufficient contrast, and no broken styles/classes appear."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "When logged out, render two entry points (\"Login\" and \"Sign up\") that both open the existing OTP-based LoginModal (same flow; no alternative auth UI). Verify the component's usage instructions before implementing."
+          "description": "Update global CSS variables and custom utilities to remove multi-accent tokens and multi-stop gradients; redefine accent-related variables/section background gradients to use only the chosen 1–2 premium brand colors while preserving readable light/dark contrast."
         },
         {
-          "path": "frontend/src/pages/HomePage.tsx",
+          "path": "frontend/tailwind.config.js",
           "operation": "modify",
-          "description": "Update logged-out call-to-action area(s) to show both \"Login\" and \"Sign up\" buttons and wire both to the same OTP LoginModal open handler (no separate signup screen). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/SignupModal.tsx",
-          "operation": "modify",
-          "description": "Ensure the deprecated SignupModal is not used for user navigation (keep as dead/unused or add a clear deprecation comment); remove any leftover CTA copy that suggests a separate signup modal if present. Verify the component's usage instructions before implementing."
+          "description": "Reduce the Tailwind safelist and extended accent color/shadow entries so only the 1–2 chosen brand accent utilities remain (text/bg/border/ring/hover/data-state variants as needed); ensure no unused multi-accent utilities remain referenced by the app."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "After first OTP verification with no existing or incomplete profile, require a profile setup flow (mobile, Gmail, profile photo) and persist it to the backend profile.",
+      "summary": "Refactor the accent utility layer to expose a small fixed set of brand accents (max two) and update callers to stop using route/subject/index-based multi-color rotation.",
       "acceptanceCriteria": [
-        "If the user verifies OTP and no profile exists, the app prompts a profile setup flow instead of silently creating a \"complete\" profile.",
-        "Profile setup form includes fields for mobile number, Gmail ID, and profile picture upload/selection.",
-        "Submitting profile setup persists the values in the backend user profile (including photo).",
-        "If the user already has a profile, OTP verification logs them in without forcing profile setup again.",
-        "Validation errors from backend (e.g., invalid email format, invalid/duplicate mobile) are shown to the user in the profile setup UI."
+        "Utilities in frontend/src/utils/accents.ts do not produce more than two accent variants.",
+        "Pages/components that currently call getAccentByIndex/getRouteAccent/getSubjectAccent (or similar) are updated to use the new fixed brand accent(s).",
+        "No Tailwind class generation relies on dynamic/interpolated accent names (i.e., avoid patterns that Tailwind cannot statically detect)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/ProfileSetupModal.tsx",
+          "path": "frontend/src/utils/accents.ts",
           "operation": "modify",
-          "description": "Implement the ProfileSetupModal UI (currently placeholder) to collect mobile number, Gmail ID, and profile photo; use the blob-storage ExternalBlob to represent/upload the selected image, and submit via backend profile update capability (e.g., updateProfile). Show backend validation errors inline. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/LoginModal.tsx",
-          "operation": "modify",
-          "description": "Remove/disable the current auto-create \"complete\" profile behavior after OTP verification; after verify success, refetch current profile and if missing or profileComplete is false, hand off to ProfileSetupModal (or trigger the global profile-setup prompt) instead of creating defaults. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire the ProfileSetupModal globally: when session is authenticated and the caller profile is missing OR profileComplete is false (using the existing query's isFetched/isLoading flags to prevent modal flash), show the modal and block normal navigation until completion. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add/adjust a React Query mutation hook for profile setup submission that calls the backend profile update capability (e.g., updateProfile) with name, ExternalBlob photo, mobile, and gmail; ensure errors are surfaced to the UI and queries (session/profile) are invalidated on success. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Improve OTP modal recovery by adding a visible Retry action for \"Service temporarily unavailable\" errors.",
-      "acceptanceCriteria": [
-        "When the OTP modal shows the \"Service temporarily unavailable\" error, the user has a visible \"Retry\" button that re-attempts the last action (generate OTP or verify OTP as appropriate).",
-        "The OTP modal continues to display the existing error text when failures occur, but does not leave the user stuck without a next step.",
-        "Retry does not bypass any validation (e.g., still requires 10-digit mobile, 6-digit OTP)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/LoginModal.tsx",
-          "operation": "modify",
-          "description": "Detect the \"Service temporarily unavailable\" error state and render a \"Retry\" button inside the OTP modal; retry should call generate OTP when otpSent is false, and call verify OTP when otpSent is true (keeping existing mobile/OTP length validation and disabling retry when invalid). Include brief recovery guidance text near the retry action. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useMobileAuth.ts",
-          "operation": "modify",
-          "description": "Expose minimal state needed for the modal to retry the last OTP operation cleanly (e.g., track last attempted action or provide dedicated retry helper that reuses the existing sendOTP/verifyOTP paths); do not change OTP-only behavior. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Rename all user-facing brand text from \"Exam Xpress\" to exactly \"Exam Xpresss\" across the UI.",
-      "acceptanceCriteria": [
-        "Header brand text shows \"Exam Xpresss\".",
-        "Home page hero/title and other visible marketing text use \"Exam Xpresss\".",
-        "Login toasts/messages that reference the brand use \"Exam Xpresss\".",
-        "App loading text uses \"Exam Xpresss\".",
-        "No remaining visible strings say \"Exam Xpress\" (double-check common pages: Home, Header, Login modal)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Update app loading text and any other user-visible strings to use \"Exam Xpresss\" exactly. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/Header.tsx",
-          "operation": "modify",
-          "description": "Update the header brand text and logo alt text to \"Exam Xpresss\" exactly. Verify the component's usage instructions before implementing."
+          "description": "Replace the rotating multi-accent palette and route/subject maps with a fixed brand accent API (max two accents). Ensure all returned Tailwind class strings remain literal (no computed class-name interpolation) and keep helpers aligned with the reduced accent set."
         },
         {
           "path": "frontend/src/pages/HomePage.tsx",
           "operation": "modify",
-          "description": "Update hero/title and any marketing copy that mentions the brand to \"Exam Xpresss\" exactly. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/LoginModal.tsx",
-          "operation": "modify",
-          "description": "Update toasts/messages and any visible copy referencing the brand to \"Exam Xpresss\" exactly. Verify the component's usage instructions before implementing."
+          "description": "Update feature/benefit/CTA sections to use the new fixed brand accent utilities instead of getAccentByIndex and any dynamic Tailwind class construction (e.g., remove `hover:${...}` and `hover:border-${...}` patterns) so Tailwind can statically detect all classes."
         },
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Update footer brand info text to \"Exam Xpresss\" exactly (and any related visible strings). Verify the component's usage instructions before implementing."
+          "description": "Replace hardcoded teal/pink/violet accent usage with the new fixed brand accent(s) from the refactored accents utility so social icons, headings, and highlights no longer mix multiple accents."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Update navigation and auth/profile accent styling to use the new fixed brand accent(s); remove route-based accent variability by switching to the refactored accents utilities and ensuring all Tailwind classes are statically defined."
+        },
+        {
+          "path": "frontend/src/pages/CoursesPage.tsx",
+          "operation": "modify",
+          "description": "Remove subject-based accent variation by switching from getSubjectAccent to the fixed brand accent(s) and update headings/loading states/cards/badges to use only the brand accents."
+        },
+        {
+          "path": "frontend/src/pages/SyllabusPage.tsx",
+          "operation": "modify",
+          "description": "Remove subject-based accent variation by switching from getSubjectAccent to the fixed brand accent(s) and update headings/loading states/cards/accordion triggers to use only the brand accents."
+        },
+        {
+          "path": "frontend/src/pages/MockTestsPage.tsx",
+          "operation": "modify",
+          "description": "Remove subject-based accent variation by switching from getSubjectAccent/tab trigger accent rotation to the fixed brand accent(s); ensure TabsTrigger classes and all other accent-related classes remain statically enumerable."
+        },
+        {
+          "path": "frontend/src/pages/ProgressPage.tsx",
+          "operation": "modify",
+          "description": "Update metric cards and chart color helpers usage so charts/metrics no longer rotate through many accents; ensure chart colors derive only from the fixed brand accents and remain readable in light/dark mode."
+        },
+        {
+          "path": "frontend/src/pages/PaymentSuccess.tsx",
+          "operation": "modify",
+          "description": "Replace any non-brand accent usage (e.g., green/violet/teal/etc.) with the fixed brand accent(s) for icons, highlights, and buttons, keeping success messaging readable without introducing new accent colors."
+        },
+        {
+          "path": "frontend/src/pages/PaymentFailure.tsx",
+          "operation": "modify",
+          "description": "Replace any non-brand accent usage (e.g., red/orange/violet mixes) with the fixed brand accent(s) for icons, highlights, and buttons, maintaining error clarity while adhering to the 1–2 accent limit."
+        },
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Update profile UI accent styles (rings, buttons, highlights, progress indicators if present) to rely only on the fixed brand accent(s) and remove any lingering multi-accent utility usage."
         }
       ]
     },
     {
-      "id": "REQ-6",
-      "summary": "Increase the editable area height and readability spacing for the Admin Panel syllabus topics editor textarea.",
+      "id": "REQ-3",
+      "summary": "Update key UI surfaces (Header, Footer, Home hero/CTA/sections) to a consistent premium 1–2 color theme and remove multi-accent gradient text/decoration.",
       "acceptanceCriteria": [
-        "The topics input in Admin Panel \u0000 Syllabus uses a noticeably larger textarea (increased min-height) suitable for long multi-line editing.",
-        "The textarea has comfortable padding/line-height so typed lines are easy to read.",
-        "The change applies at least to the textarea with className `admin-syllabus-editor` in `frontend/src/pages/AdminPanel.tsx`."
+        "Header branding (logo ring, title text, nav active/hover styles, auth buttons) uses only the chosen 1–2 brand colors for accents.",
+        "Footer social icons, headings, and highlights use only the chosen 1–2 brand colors for accents (no teal/pink/violet mix).",
+        "Home page hero/title/CTA and section background gradient utilities use only the chosen 1–2 brand colors for accent/decoration (no multi-accent gradients)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/AdminPanel.tsx",
+          "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Adjust the syllabus topics editor control (textarea with className `admin-syllabus-editor`) to have a larger editable area (e.g., higher minHeight / rows) and improved readability. Verify the component's usage instructions before implementing."
+          "description": "Remove multi-accent gradient logo text and mixed accent rings/buttons; re-style logo ring, brand title, nav active indicator, hover states, and auth/profile UI so accents use only the fixed 1–2 brand colors."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Update footer brand block, section headings, social links, and the copyright/attribution highlight so all accents use only the fixed 1–2 brand colors; remove any teal/pink/violet mixed treatments."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Replace multi-accent gradient hero title/CTA styling and any multi-accent section decorations with brand-consistent styling; ensure feature cards, benefit list, and CTA section use only the fixed 1–2 brand colors and no dynamic Tailwind class generation."
         },
         {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Add/adjust styling for `.admin-syllabus-editor` to enforce a larger min-height plus comfortable padding and line-height so long writing remains visible while typing. Verify the component's usage instructions before implementing."
+          "description": "Update custom section background gradient utility classes (e.g., section-bg-gradient-* and border-accent-gradient) to use only the 1–2 brand colors (no teal/violet/pink/amber/cyan blends) while keeping subtle decoration in both themes."
         }
       ]
     }

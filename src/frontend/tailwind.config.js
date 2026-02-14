@@ -6,6 +6,37 @@ import animate from 'tailwindcss-animate';
 export default {
     darkMode: ['class'],
     content: ['index.html', 'src/**/*.{js,ts,jsx,tsx,html,css}'],
+    safelist: [
+        // Brand colors
+        'text-brand-red', 'text-brand-blue',
+        'bg-brand-red', 'bg-brand-blue',
+        'bg-brand-red/10', 'bg-brand-blue/10',
+        'bg-brand-red/15', 'bg-brand-blue/15',
+        'bg-brand-red/20', 'bg-brand-blue/20',
+        'bg-brand-red/5', 'bg-brand-blue/5',
+        'bg-brand-red/90', 'bg-brand-blue/90',
+        'border-brand-red', 'border-brand-blue',
+        'border-brand-red/30', 'border-brand-blue/30',
+        'ring-brand-red', 'ring-brand-blue',
+        
+        // Hover variants
+        'hover:text-brand-red', 'hover:text-brand-blue',
+        'hover:bg-brand-red', 'hover:bg-brand-blue',
+        'hover:bg-brand-red/10', 'hover:bg-brand-blue/10',
+        'hover:bg-brand-red/5', 'hover:bg-brand-blue/5',
+        'hover:bg-brand-red/90', 'hover:bg-brand-blue/90',
+        'hover:border-brand-red', 'hover:border-brand-blue',
+        
+        // Data-state active variants
+        'data-[state=active]:text-brand-red', 'data-[state=active]:text-brand-blue',
+        'data-[state=active]:bg-brand-red/10', 'data-[state=active]:bg-brand-blue/10',
+        
+        // Shadows
+        'shadow-brand-red', 'shadow-brand-blue',
+        
+        // Border widths
+        'border-l-4',
+    ],
     theme: {
         container: {
             center: true,
@@ -68,11 +99,12 @@ export default {
                     border: 'oklch(var(--sidebar-border))',
                     ring: 'oklch(var(--sidebar-ring))'
                 },
-                'blue-accent': 'oklch(0.48 0.20 250)',
-                'blue-light': 'oklch(0.58 0.18 250)',
-                'red-primary': 'oklch(0.55 0.22 25)',
-                'red-light': 'oklch(0.65 0.20 25)',
-                'red-dark': 'oklch(0.45 0.24 25)'
+                'brand-red': 'oklch(var(--brand-red) / <alpha-value>)',
+                'brand-red-dark': 'oklch(var(--brand-red-dark) / <alpha-value>)',
+                'brand-red-light': 'oklch(var(--brand-red-light) / <alpha-value>)',
+                'brand-blue': 'oklch(var(--brand-blue) / <alpha-value>)',
+                'brand-blue-dark': 'oklch(var(--brand-blue-dark) / <alpha-value>)',
+                'brand-blue-light': 'oklch(var(--brand-blue-light) / <alpha-value>)'
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -88,7 +120,9 @@ export default {
                 'premium-lg': '0 10px 15px -3px rgba(220, 38, 38, 0.12), 0 4px 6px -2px rgba(220, 38, 38, 0.08)',
                 'premium-xl': '0 20px 25px -5px rgba(220, 38, 38, 0.12), 0 10px 10px -5px rgba(220, 38, 38, 0.08)',
                 'blue': '0 4px 6px -1px rgba(37, 99, 235, 0.12), 0 2px 4px -1px rgba(37, 99, 235, 0.08)',
-                'blue-lg': '0 10px 15px -3px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(37, 99, 235, 0.08)'
+                'blue-lg': '0 10px 15px -3px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(37, 99, 235, 0.08)',
+                'brand-red': '0 4px 12px -2px oklch(var(--brand-red) / 0.3)',
+                'brand-blue': '0 4px 12px -2px oklch(var(--brand-blue) / 0.3)'
             },
             keyframes: {
                 'accordion-down': {
@@ -118,5 +152,3 @@ export default {
     },
     plugins: [typography, containerQueries, animate]
 };
-
-

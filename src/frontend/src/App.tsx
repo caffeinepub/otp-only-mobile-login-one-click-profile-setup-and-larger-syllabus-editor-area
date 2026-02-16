@@ -113,22 +113,18 @@ function AppContent() {
   const { data: userProfile, isLoading: profileLoading, isFetched: profileFetched } = useGetCallerUserProfile();
   const showProfileSetup = isAuthenticated && !profileLoading && profileFetched && (userProfile === null || (userProfile && !userProfile.profileComplete));
   
+  // Initialize page from URL path on mount, then use state
   const [currentPage, setCurrentPage] = useState<Page>(() => {
-    try {
-      const storedPage = sessionStorage.getItem('currentPage') as Page | null;
-      return storedPage || 'home';
-    } catch {
-      return 'home';
-    }
+    const path = window.location.pathname.slice(1) || 'home';
+    const validPages: Page[] = ['home', 'mock-tests', 'courses', 'syllabus', 'progress', 'profile', 'admin', 'payment-success', 'payment-failure'];
+    return validPages.includes(path as Page) ? (path as Page) : 'home';
   });
 
   const handleNavigate = (page: Page) => {
     setCurrentPage(page);
-    try {
-      sessionStorage.setItem('currentPage', page);
-    } catch (error) {
-      console.error('Failed to save page to sessionStorage:', error);
-    }
+    // Update URL without reload for better UX and deployment compatibility
+    const newPath = page === 'home' ? '/' : `/${page}`;
+    window.history.pushState({}, '', newPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -140,14 +136,24 @@ function AppContent() {
     }
   };
 
+  // Sync state with browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.slice(1) || 'home';
+      const validPages: Page[] = ['home', 'mock-tests', 'courses', 'syllabus', 'progress', 'profile', 'admin', 'payment-success', 'payment-failure'];
+      if (validPages.includes(path as Page)) {
+        setCurrentPage(path as Page);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   useEffect(() => {
     if (!isAuthenticated && currentPage !== 'home') {
       setCurrentPage('home');
-      try {
-        sessionStorage.setItem('currentPage', 'home');
-      } catch (error) {
-        console.error('Failed to reset page:', error);
-      }
+      window.history.pushState({}, '', '/');
     }
   }, [isAuthenticated, currentPage]);
 

@@ -1,75 +1,89 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T04:40:00.612Z",
-  "summary": "Diff largely introduces a new red/blue brand token system and updates multiple pages/components to use brand-red/brand-blue. However, several places still rely on subject/route-based accent selection and at least one component generates Tailwind classes dynamically, which conflicts with the requirements to avoid subject/route-based accent variety and to keep Tailwind class names statically detectable.",
+  "generatedAt": "2026-02-16T15:54:48.535Z",
+  "summary": "Branding updates are evident in Header/Footer (logo path and English “Exam Xpresss” text), but there is no evidence that the required generated image assets were added under frontend/public/assets/generated. There is also insufficient evidence that favicon/app icons were generated and wired up, and that the build/deployment failure was fully resolved. Several unrelated/extra changes appear to have been introduced (e.g., sitemap, Google verification, significant auth/session and UX changes).",
   "missing_requirements": [
     {
       "id": "REQ-1",
-      "requirement": "Ensure accent styling is limited to a maximum of two brand colors and no UI elements rely on subject/route-based accent variety across pages/components.",
-      "reason": "Multiple pages/components still choose accent color based on subject or route/page (e.g., getSubjectAccent(...) and per-nav-item page-based color selection), which continues route/subject-based accent variability rather than a consistent fixed accent usage across the site.",
+      "requirement": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
+      "reason": "The UI references /assets/generated/exam-xpresss-logo-clean.dim_512x512.png, but the diff summary shows no added static asset files and provides no evidence that the required PNG actually exists under frontend/public/assets/generated.",
       "evidence": [
-        "frontend/src/pages/CoursesPage.tsx (uses getSubjectAccent(subject) and getSubjectAccent(course.subject))",
-        "frontend/src/pages/MockTestsPage.tsx (uses getSubjectAccent(subject))",
-        "frontend/src/pages/SyllabusPage.tsx (uses getSubjectAccent(syllabus.subject))",
-        "frontend/src/components/Header.tsx (computes `color` based on `page` and uses red vs blue for active state)"
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/Footer.tsx",
+        "File diff summary: \"Added: 0\" (no new files shown)"
       ]
     },
     {
       "id": "REQ-2",
-      "requirement": "Refactor frontend/src/utils/accents.ts so it no longer rotates through many accent colors by route/subject/index; update callers to use the new fixed brand accents; avoid Tailwind-unsafe dynamic/interpolated class names.",
-      "reason": "Call sites still use subject-based accent helpers (getSubjectAccent) and index-based color selection (getBrandByIndex) to vary accent by subject/index. Additionally, Footer builds Tailwind class names via string interpolation (bg-${color}, text-${color}), which violates the requirement to avoid dynamic Tailwind class generation.",
+      "requirement": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
+      "reason": "There is no evidence in the diff summary that the required favicon/app icon PNG files were created under frontend/public/assets/generated, and frontend/index.html changes are only described in a secondary summary without showing the actual <link rel=\"icon\"> / apple-touch-icon entries.",
       "evidence": [
-        "frontend/src/pages/CoursesPage.tsx (imports/uses getSubjectAccent)",
-        "frontend/src/pages/MockTestsPage.tsx (imports/uses getSubjectAccent)",
-        "frontend/src/pages/SyllabusPage.tsx (imports/uses getSubjectAccent)",
-        "frontend/src/pages/ProgressPage.tsx (uses getBrandByIndex(index) for metrics; uses getMetricCardClasses/getChartColor which are index-based)",
-        "frontend/src/components/Footer.tsx (className uses `bg-${color}` and `text-${color}` interpolation)",
-        "frontend/src/utils/accents.ts (includes getBrandByIndex; includes legacy mapping and indicates subject-based accent logic continues in truncated portion)"
+        "frontend-file-summaries.txt (mentions \"frontend/index.html\" corrected favicon paths, but no icon files shown)",
+        "File diff summary: \"Added: 0\" (no new generated PNGs shown)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
+      "reason": "Header/Footer updates to use the Exam Xpresss logo are evidenced, but the diff summary does not provide enough coverage of all UI text/components to verify that no 'Caffeine AI'/'caffeine.ai' attribution remains anywhere in the UI.",
+      "evidence": [
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/Footer.tsx",
+        "frontend-file-summaries.txt (claims Caffeine AI attribution removed, but does not show all UI files)"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
+      "reason": "While multiple changes suggest attempts to improve build/deployment compatibility (e.g., App routing/auth handling, Tailwind safelist), the diff summary does not include evidence of the specific deployment error being addressed, nor any confirmation that install/build/deploy now succeeds.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend-file-summaries.txt (describes deployment compatibility changes but no demonstrated successful deploy)",
+        "backend/main.mo"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "SEO additions: Google Search Console verification meta tag and sitemap link; new sitemap.xml content.",
-      "reason": "Not requested (non-goal: keep changes limited to theme/color usage; no new unrelated features).",
+      "description": "Added/updated sitemap and Google Search Console verification in the HTML.",
+      "reason": "Not requested by the BuildRequest (branding assets + favicon wiring + removing Caffeine AI branding + fix deployment). Sitemap/GSC are extra SEO/marketing additions.",
       "evidence": [
-        "frontend/index.html (mentioned in frontend-file-summaries.txt as adding verification meta + sitemap link)",
-        "frontend/public/sitemap.xml (mentioned in frontend-file-summaries.txt as added/updated)"
+        "frontend-file-summaries.txt (mentions \"Google Search Console verification\" and \"frontend/public/sitemap.xml\")"
       ]
     },
     {
-      "description": "Admin panel syllabus editor resizing/typography changes (\"enlarged syllabus editor\").",
-      "reason": "Not requested; outside theming-only scope and explicitly not part of requested theme simplification work.",
+      "description": "Substantial UI/UX and behavior changes beyond branding (e.g., new error boundary screen, altered authentication/session handling, retry policies).",
+      "reason": "BuildRequest focuses on branding assets and fixing deployment; broad auth/session and app behavior changes appear to exceed the stated scope and non-goals.",
       "evidence": [
-        "frontend-file-summaries.txt (mentions frontend/src/pages/AdminPanel.tsx changes)"
+        "frontend/src/App.tsx (ErrorBoundary, extensive react-query retry logic, session-state auth comment)",
+        "frontend-file-summaries.txt (describes auth/routing state management changes)"
       ]
     },
     {
-      "description": "Non-theming logic/config changes in App-level behavior (e.g., query retry policies / error boundary behavior) beyond simple color usage adjustments.",
-      "reason": "Constraint says keep changes limited to theme/color usage; do not change authentication logic or backend behavior. The diff shows broader App.tsx changes not obviously limited to theming.",
+      "description": "Admin panel/editor usability changes (e.g., enlarged syllabus editor sizing).",
+      "reason": "Not requested; could be considered a product/feature tweak unrelated to branding assets or deployment fix.",
       "evidence": [
-        "frontend/src/App.tsx (shows QueryClient defaultOptions retry behavior and ErrorBoundary implementation; file is truncated so full extent is unclear)"
+        "frontend-file-summaries.txt (\"frontend/src/pages/AdminPanel.tsx\": enlarged syllabus editor 500px min-height, larger font, padding)"
+      ]
+    },
+    {
+      "description": "Mobile login modal enhancements including OTP copy-to-clipboard UI.",
+      "reason": "Not requested by branding/deployment-focused BuildRequest; appears to be a new UX feature.",
+      "evidence": [
+        "frontend/src/components/MobileLoginModal.tsx (Copy/Check icons, handleCopyOtp, clipboard writeText)"
       ]
     }
   ],
-  "confidence": 0.74,
+  "confidence": 0.68,
   "changed_files": [
+    "backend/main.mo",
     "frontend-file-summaries.txt",
     "frontend/src/App.tsx",
     "frontend/src/components/Footer.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/index.css",
-    "frontend/src/pages/CoursesPage.tsx",
+    "frontend/src/components/MobileLoginModal.tsx",
     "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/MockTestsPage.tsx",
-    "frontend/src/pages/PaymentFailure.tsx",
-    "frontend/src/pages/PaymentSuccess.tsx",
-    "frontend/src/pages/ProfilePage.tsx",
-    "frontend/src/pages/ProgressPage.tsx",
-    "frontend/src/pages/SyllabusPage.tsx",
-    "frontend/src/utils/accents.ts",
-    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

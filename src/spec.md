@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Simplify the site’s visual theme to a consistent premium look by using only 1–2 brand accent colors (plus neutrals) across all pages and components.
+**Goal:** Apply Exam Xpresss branding (clean logo + app icons), remove any Caffeine AI attribution, and fix the current build/deployment failure so the app successfully deploys to the Internet Computer.
 
 **Planned changes:**
-- Update global styling usage so accents (buttons, highlights, gradients, icons, rings, badges, borders, and accent text) use at most two fixed brand colors, removing the current multi-accent palette usage.
-- Refactor `frontend/src/utils/accents.ts` to stop rotating/deriving accents by route/subject/index and instead expose a small fixed set (max two) of brand accent styles for consistent reuse.
-- Update key UI areas that currently mix multiple accent colors and multi-stop gradients (e.g., Header, Footer, Home page hero/sections) to use only the chosen 1–2 brand colors, including removing multi-color gradient text.
+- Create a clean, watermark-free Exam Xpresss logo (transparent background) from the provided uploaded logo image(s) and commit it as a static asset under `frontend/public/assets/generated`.
+- Generate favicon/app icon PNGs derived from the clean logo and reference them from `frontend/index.html`.
+- Update/verify UI branding so the header uses the Exam Xpresss logo and remove any visible “Caffeine AI” / “caffeine.ai” branding across the UI (including footer attribution), keeping branding text in English.
+- Resolve the build/deployment failure so a clean install + build works and deployment to the Internet Computer completes without errors, with no runtime errors on initial load.
 
-**User-visible outcome:** The entire site appears visually consistent with a premium theme using only 1–2 accent colors in both light and dark mode, without any leftover multi-accent styling or broken classes.
+**User-visible outcome:** The app displays Exam Xpresss branding (logo in header and correct favicon/app icons), no Caffeine AI attribution is visible, and the project builds and deploys successfully with the home page loading and navigation working.

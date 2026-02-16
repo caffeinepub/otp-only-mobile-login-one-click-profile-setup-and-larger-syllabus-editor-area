@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { User, LogOut, Settings, GraduationCap } from 'lucide-react';
+import { User, LogOut, Settings } from 'lucide-react';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { useGetCallerUserProfile } from '../hooks/useQueries';
 import { useQueryClient } from '@tanstack/react-query';
@@ -48,12 +48,16 @@ const Header = memo(function Header({ currentPage, onNavigate, onLoginClick, isA
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-red to-brand-blue rounded-full blur-sm opacity-75 group-hover:opacity-100 transition-opacity" />
-                <div className="relative h-10 w-10 rounded-full bg-gradient-to-br from-brand-red to-brand-blue flex items-center justify-center ring-2 ring-background">
-                  <GraduationCap className="h-6 w-6 text-white" />
+                <div className="relative h-10 w-10 rounded-full bg-gradient-to-br from-brand-red to-brand-blue flex items-center justify-center ring-2 ring-background overflow-hidden">
+                  <img 
+                    src="/assets/generated/exam-xpresss-logo-clean.dim_512x512.png" 
+                    alt="Exam Xpresss Logo" 
+                    className="h-full w-full object-contain p-1"
+                  />
                 </div>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-brand-red to-brand-blue bg-clip-text text-transparent">
-                ExamXpress
+                Exam Xpresss
               </span>
             </button>
 

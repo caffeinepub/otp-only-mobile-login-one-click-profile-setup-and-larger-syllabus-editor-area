@@ -1,75 +1,112 @@
 {
   "kind": "build_request",
-  "title": "Simplify site theme to 1–2 premium brand colors (remove multi-accent palette)",
-  "priority": "normal",
+  "title": "Apply Exam Xpresss branding assets and fix failed deployment",
+  "projectName": "Exam Xpresss",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Update the global styling system to use only 1–2 premium brand colors across the site (for accents, buttons, highlights, gradients, icons, and rings), replacing the current multi-accent palette usage (teal/green/amber/pink/violet/cyan/orange/purple/etc.).",
+      "text": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "I want ki ap mere web me 1 or 2 premium colour use kare na ki multiple colour"
+          "Do it now"
         ]
       },
       "acceptanceCriteria": [
-        "Across all pages/components, accent styling is limited to a maximum of two brand colors (plus neutrals like background/foreground/muted/border).",
-        "No UI elements (text, borders, rings, icons, buttons, badges, gradients) rely on the rotating accent palette or subject/route-based accent variety.",
-        "Light and dark mode remain readable with sufficient contrast, and no broken styles/classes appear."
+        "A clean transparent logo file exists at /assets/generated/exam-xpresss-logo-clean.dim_512x512.png.",
+        "The generated logo has no visible watermark/artifacts and maintains crisp edges and centered composition.",
+        "The generated assets are committed under frontend/public/assets/generated (served statically; not routed through the backend)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Refactor the accent utility layer (frontend/src/utils/accents.ts) so it no longer rotates through many accent colors by route/subject/index, and instead exposes a small, fixed set of brand accent styles (max two) that components can use consistently.",
+      "text": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "I want ki ap mere web me 1 or 2 premium colour use kare na ki multiple colour"
+          "Do it now"
         ]
       },
       "acceptanceCriteria": [
-        "Utilities in frontend/src/utils/accents.ts do not produce more than two accent variants.",
-        "Pages/components that currently call getAccentByIndex/getRouteAccent/getSubjectAccent (or similar) are updated to use the new fixed brand accent(s).",
-        "No Tailwind class generation relies on dynamic/interpolated accent names (i.e., avoid patterns that Tailwind cannot statically detect)."
+        "The following files exist under frontend/public/assets/generated: exam-xpresss-favicon.dim_32x32.png, exam-xpresss-icon.dim_192x192.png, exam-xpresss-icon.dim_512x512.png.",
+        "frontend/index.html references the generated favicon and app icons using <link rel=\"icon\"> and apple-touch-icon appropriately.",
+        "Browser tab favicon displays the Exam Xpresss icon when running the app."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Update key UI components and pages that currently use multi-color gradients and mixed accent classes (e.g., Header, Footer, HomePage sections) to use a consistent 1–2 color premium theme, including removing multi-stop gradient text that blends multiple accent colors.",
+      "text": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "I want ki ap mere web me 1 or 2 premium colour use kare na ki multiple colour"
+          "Do it now"
         ]
       },
       "acceptanceCriteria": [
-        "Header branding (logo ring, title text, nav active/hover styles, auth buttons) uses only the chosen 1–2 brand colors for accents.",
-        "Footer social icons, headings, and highlights use only the chosen 1–2 brand colors for accents (no teal/pink/violet mix).",
-        "Home page hero/title/CTA and section background gradient utilities use only the chosen 1–2 brand colors for accent/decoration (no multi-accent gradients)."
+        "The header brand mark uses /assets/generated/exam-xpresss-logo-clean.dim_512x512.png and remains responsive with the existing header layout intact.",
+        "No visible text/link attribution to 'Caffeine AI' or 'caffeine.ai' appears anywhere in the UI (including the footer).",
+        "All user-facing text related to branding is in English."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Do it now"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A clean install + build completes successfully (frontend build and Motoko canister build).",
+        "Deployment/push to network completes successfully without the previously encountered deployment error.",
+        "No runtime errors occur on initial load after deployment (home page renders and navigation works)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui (shadcn UI sources are read-only).",
-    "Do not edit frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths).",
-    "Keep changes limited to theme/color usage; do not change authentication logic or backend behavior."
+    "Backend must remain a single Motoko actor in backend/main.mo; only add backend migration (backend/migration.mo) if an upgrade requiring state migration is necessary.",
+    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or any code under frontend/src/components/ui; compose/consume them instead.",
+    "Store and serve generated images as static assets under frontend/public/assets/generated (do not proxy images through the backend)."
   ],
   "nonGoals": [
-    "Adding new pages or features unrelated to theming.",
-    "Changing the logo image asset.",
-    "Implementing new authentication or performance optimizations (not requested in the current message)."
+    "Add new product features unrelated to branding (e.g., new pages, new payment flows, new test/course functionality).",
+    "Introduce third-party authentication providers beyond Internet Identity.",
+    "Add external databases or non-Motoko backend services."
   ],
   "imageRequirements": {
-    "required": [],
-    "edits": []
+    "required": [
+      "Clean circular 'EX' logo on transparent background (exam-xpresss-logo-clean.dim_512x512.png)",
+      "Red circular 'EX' favicon icon on transparent background (exam-xpresss-favicon.dim_32x32.png)",
+      "Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_192x192.png)",
+      "Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_512x512.png)"
+    ],
+    "edits": [
+      "Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-3.png > exam-xpresss-logo-clean.dim_512x512.png)",
+      "Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-4.png > exam-xpresss-logo-clean.dim_512x512.png)"
+    ]
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

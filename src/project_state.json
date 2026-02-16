@@ -4,50 +4,46 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [
-    "Build/deploy sometimes fails with a configuration problem (\"Please report this to the Caffeine team\")."
+    "Deployment/build failed during push to network (deployment error)."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
+  "imageRequirements": "## Required Images\n- Clean circular 'EX' logo on transparent background (exam-xpresss-logo-clean.dim_512x512.png)\n- Red circular 'EX' favicon icon on transparent background (exam-xpresss-favicon.dim_32x32.png)\n- Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_192x192.png)\n- Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_512x512.png)\n\n## Edit Images\n- Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-3.png > exam-xpresss-logo-clean.dim_512x512.png)\n- Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-4.png > exam-xpresss-logo-clean.dim_512x512.png)",
   "existing_features": [
     {
-      "id": "feature-update-the-global-styling-system-to-use-only-1-2-premium-brand-colors-across-the-site-for-accents-buttons-highlights-gradients-icons-and-rings-replacing-the-current-multi-accent-palette-usage-teal-green-amber-pink-violet-cyan-orange-purple-etc",
-      "title": "Update the global styling system to use only 1–2 premium brand colors across the site (for accents, buttons, highlights, gradients, icons, and rings), replacing the current multi-accent palette usage (teal/green/amber/pink/violet/cyan/orange/purple/etc.).",
+      "id": "feature-create-clean-watermark-free-exam-xpresss-logo-assets-from-the-user-uploaded-logo-image-s-and-add-them-as-static-files-under-frontend-public-assets-generated",
+      "title": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-refactor-the-accent-utility-layer-frontend-src-utils-accents-ts-so-it-no-longer-rotates-through-many-accent-colors-by-route-subject-index-and-instead-exposes-a-small-fixed-set-of-brand-accent-styles-max-two-that-components-can-use-consistently",
-      "title": "Refactor the accent utility layer (frontend/src/utils/accents.ts) so it no longer rotates through many accent colors by route/subject/index, and instead exposes a small, fixed set of brand accent styles (max two) that components can use consistently.",
+      "id": "feature-generate-favicon-app-icon-pngs-from-the-clean-logo-and-ensure-the-app-uses-them-in-the-html-document-head",
+      "title": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-key-ui-components-and-pages-that-currently-use-multi-color-gradients-and-mixed-accent-classes-e-g-header-footer-homepage-sections-to-use-a-consistent-1-2-color-premium-theme-including-removing-multi-stop-gradient-text-that-blends-multiple-accent-colors",
-      "title": "Update key UI components and pages that currently use multi-color gradients and mixed accent classes (e.g., Header, Footer, HomePage sections) to use a consistent 1–2 color premium theme, including removing multi-stop gradient text that blends multiple accent colors.",
+      "id": "feature-update-verify-ui-branding-to-use-the-exam-xpresss-logo-as-the-primary-brand-mark-in-the-header-and-remove-any-visible-caffeine-ai-caffeine-ai-branding-across-the-ui-including-footer-attribution",
+      "title": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
-    }
-  ],
-  "new_feature_requests": [
-    {
-      "id": "AR-1",
-      "summary": "Improve login and signup performance (make authentication screens/flows faster).",
-      "reqIds": [],
-      "status": "pending"
     },
     {
-      "id": "AR-2",
-      "summary": "Update site theme to use only 1–2 premium brand colors instead of multiple colors.",
-      "reqIds": [],
-      "status": "pending"
+      "id": "feature-resolve-the-build-deployment-failure-so-the-project-successfully-builds-and-deploys-to-the-internet-computer-without-errors",
+      "title": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
     }
   ],
-  "projectName": "Simplify site theme to 1–2 premium brand colors (remove multi-accent palette)",
+  "new_feature_requests": [],
+  "projectName": "Exam Xpresss",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

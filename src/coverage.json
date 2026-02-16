@@ -1,98 +1,91 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T04:40:00.615Z",
+  "generatedAt": "2026-02-16T15:54:48.538Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Update the global styling system to use only 1–2 premium brand colors across the site (for accents, buttons, highlights, gradients, icons, and rings), replacing the current multi-accent palette usage (teal/green/amber/pink/violet/cyan/orange/purple/etc.).",
+        "summary": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
+          "frontend/public/assets/generated/exam-xpresss-logo-clean.dim_512x512.png"
         ],
         "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
+          "frontend/public/assets/generated/exam-xpresss-logo-clean.dim_512x512.png"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Refactor the accent utility layer (frontend/src/utils/accents.ts) so it no longer rotates through many accent colors by route/subject/index, and instead exposes a small, fixed set of brand accent styles (max two) that components can use consistently.",
+        "summary": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/utils/accents.ts",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/CoursesPage.tsx",
-          "frontend/src/pages/SyllabusPage.tsx",
-          "frontend/src/pages/MockTestsPage.tsx",
-          "frontend/src/pages/ProgressPage.tsx",
-          "frontend/src/pages/PaymentSuccess.tsx",
-          "frontend/src/pages/PaymentFailure.tsx",
-          "frontend/src/pages/ProfilePage.tsx"
+          "frontend/public/assets/generated/exam-xpresss-favicon.dim_32x32.png",
+          "frontend/public/assets/generated/exam-xpresss-icon.dim_192x192.png",
+          "frontend/public/assets/generated/exam-xpresss-icon.dim_512x512.png",
+          "frontend/index.html"
         ],
         "matchedFiles": [
-          "frontend/src/utils/accents.ts",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/CoursesPage.tsx",
-          "frontend/src/pages/SyllabusPage.tsx",
-          "frontend/src/pages/MockTestsPage.tsx",
-          "frontend/src/pages/ProgressPage.tsx",
-          "frontend/src/pages/PaymentSuccess.tsx",
-          "frontend/src/pages/PaymentFailure.tsx",
-          "frontend/src/pages/ProfilePage.tsx"
+          "frontend/public/assets/generated/exam-xpresss-favicon.dim_32x32.png",
+          "frontend/public/assets/generated/exam-xpresss-icon.dim_192x192.png",
+          "frontend/public/assets/generated/exam-xpresss-icon.dim_512x512.png"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Update key UI components and pages that currently use multi-color gradients and mixed accent classes (e.g., Header, Footer, HomePage sections) to use a consistent 1–2 color premium theme, including removing multi-stop gradient text that blends multiple accent colors.",
+        "summary": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/pages/HomePage.tsx"
         ],
         "matchedFiles": [
           "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/pages/HomePage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/MobileLoginModal.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/Footer.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/MobileLoginModal.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/Footer.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
     "build-request.json",
     "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/public/assets/generated/exam-xpresss-favicon.dim_32x32.png",
+    "frontend/public/assets/generated/exam-xpresss-icon.dim_192x192.png",
+    "frontend/public/assets/generated/exam-xpresss-icon.dim_512x512.png",
+    "frontend/public/assets/generated/exam-xpresss-logo-clean.dim_512x512.png",
     "frontend/src/App.tsx",
     "frontend/src/components/Footer.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/index.css",
-    "frontend/src/pages/CoursesPage.tsx",
+    "frontend/src/components/MobileLoginModal.tsx",
+    "frontend/src/config.ts",
     "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/MockTestsPage.tsx",
-    "frontend/src/pages/PaymentFailure.tsx",
-    "frontend/src/pages/PaymentSuccess.tsx",
-    "frontend/src/pages/ProfilePage.tsx",
-    "frontend/src/pages/ProgressPage.tsx",
-    "frontend/src/pages/SyllabusPage.tsx",
-    "frontend/src/utils/accents.ts",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

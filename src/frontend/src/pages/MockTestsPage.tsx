@@ -33,15 +33,7 @@ const MockTestsPage = memo(function MockTestsPage({ onNavigate }: MockTestsPageP
         quantity: BigInt(1),
       };
 
-      const baseUrl = `${window.location.protocol}//${window.location.host}`;
-      const successUrl = `${baseUrl}/payment-success`;
-      const cancelUrl = `${baseUrl}/payment-failure`;
-
-      const session = await createCheckout.mutateAsync({
-        items: [shoppingItem],
-        successUrl,
-        cancelUrl,
-      });
+      const session = await createCheckout.mutateAsync([shoppingItem]);
 
       if (!session?.url) {
         throw new Error('Stripe session missing url');

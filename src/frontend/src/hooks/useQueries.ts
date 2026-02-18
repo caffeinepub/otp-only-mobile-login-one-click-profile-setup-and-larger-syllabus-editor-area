@@ -13,6 +13,11 @@ import type {
 } from '../backend';
 import { Principal } from '@icp-sdk/core/principal';
 
+export type CheckoutSession = {
+  id: string;
+  url: string;
+};
+
 export function useGetSessionState() {
   const { actor, isFetching } = useActor();
 
@@ -387,24 +392,10 @@ export function useGetUserPurchases(user: Principal) {
   });
 }
 
-export function useGetContactInfo() {
-  const { actor, isFetching } = useActor();
-
-  return useQuery<{ email: string; phone: string }>({
-    queryKey: ['contactInfo'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      return actor.getContactInfo();
-    },
-    enabled: !!actor && !isFetching,
-    staleTime: Infinity,
-  });
-}
-
 export function useGetAllUserProfiles() {
   const { actor, isFetching } = useActor();
 
-  return useQuery<[Principal, UserProfile][]>({
+  return useQuery<Array<[Principal, UserProfile]>>({
     queryKey: ['allUserProfiles'],
     queryFn: async () => {
       if (!actor) return [];
@@ -446,10 +437,34 @@ export function useCreateCheckoutSession() {
   const { actor } = useActor();
 
   return useMutation({
-    mutationFn: async (data: { items: ShoppingItem[]; successUrl: string; cancelUrl: string }) => {
+    mutationFn: async (items: ShoppingItem[]): Promise<CheckoutSession> => {
       if (!actor) throw new Error('Actor not available');
-      const sessionJson = await actor.createCheckoutSession(data.items, data.successUrl, data.cancelUrl);
-      return JSON.parse(sessionJson);
-    },
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      const successUrl = `${baseUrl}/payment-success`;
+      const cancelUrl = `${baseUrl}/payment-failure`;
+      
+      const result = await actor.createCheckoutSession(items, successUrl, cancelUrl);
+      
+      // Critical: Validate and parse the JSON response
+      let session: CheckoutSession;
+      try {
+        session = JSON.parse(result) as CheckoutSession;
+      } catch (parseError) {
+        console.error('Failed to parse checkout session:', parseError);
+        throw new Error('Invalid checkout session response from server');
+      }
+      
+      // Validate that the session has a valid URL
+      if (!session || typeof session !== 'object') {
+        throw new Error('Invalid checkout session format');
+      }
+      
+      if (!session.url || typeof session.url !== 'string' || session.url.trim() === '') {
+        console.error('Checkout session missing url:', session);
+        throw new Error('Stripe session missing url. Please try again or contact support.');
+      }
+      
+      return session;
+    }
   });
 }

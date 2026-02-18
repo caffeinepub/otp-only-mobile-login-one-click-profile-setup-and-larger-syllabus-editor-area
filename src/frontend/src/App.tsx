@@ -1,5 +1,4 @@
-import { lazy, Suspense, useMemo, useState, useEffect, Component, ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { lazy, Suspense, useState, useEffect, Component, ReactNode } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { useInternetIdentity } from './hooks/useInternetIdentity';
 import { useGetCallerUserProfile, useGetSessionState } from './hooks/useQueries';
@@ -20,37 +19,6 @@ const PaymentSuccess = lazy(() => import('./pages/PaymentSuccess'));
 const PaymentFailure = lazy(() => import('./pages/PaymentFailure'));
 
 type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 30,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: true,
-      retry: (failureCount, error) => {
-        if (error instanceof Error && error.message.includes('Unauthorized')) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    },
-    mutations: {
-      retry: (failureCount, error) => {
-        if (error instanceof Error && (
-          error.message.includes('Invalid') ||
-          error.message.includes('already exists') ||
-          error.message.includes('Unauthorized')
-        )) {
-          return false;
-        }
-        return failureCount < 2;
-      },
-      retryDelay: 1000,
-    },
-  },
-});
 
 class ErrorBoundary extends Component<
   { children: ReactNode; fallback?: ReactNode },
@@ -101,7 +69,7 @@ class ErrorBoundary extends Component<
   }
 }
 
-function AppContent() {
+export default function App() {
   const { identity, isInitializing, login } = useInternetIdentity();
   
   // Critical: Use backend session state for authentication instead of Internet Identity
@@ -252,16 +220,6 @@ function AppContent() {
         {/* Profile Setup Modal - shown when authenticated but profile incomplete */}
         {showProfileSetup && <ProfileSetupModal />}
       </div>
-    </ErrorBoundary>
-  );
-}
-
-export default function App() {
-  return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AppContent />
-      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

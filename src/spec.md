@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Apply Exam Xpresss branding (clean logo + app icons), remove any Caffeine AI attribution, and fix the current build/deployment failure so the app successfully deploys to the Internet Computer.
+**Goal:** Restore Exam Xpresss to Draft Version 64 and redeploy it as a new draft so development can continue from Version 64 (instead of the currently deployed Draft Version 68).
 
 **Planned changes:**
-- Create a clean, watermark-free Exam Xpresss logo (transparent background) from the provided uploaded logo image(s) and commit it as a static asset under `frontend/public/assets/generated`.
-- Generate favicon/app icon PNGs derived from the clean logo and reference them from `frontend/index.html`.
-- Update/verify UI branding so the header uses the Exam Xpresss logo and remove any visible “Caffeine AI” / “caffeine.ai” branding across the UI (including footer attribution), keeping branding text in English.
-- Resolve the build/deployment failure so a clean install + build works and deployment to the Internet Computer completes without errors, with no runtime errors on initial load.
+- Restore the application codebase and configuration to match Draft Version 64.
+- Redeploy the restored Version 64 as a new draft.
+- Fix any build/deployment blockers encountered so the Version 64 frontend build and backend canister deploy complete successfully and core pages render (Home, Mock Tests, Courses, Syllabus, Profile).
 
-**User-visible outcome:** The app displays Exam Xpresss branding (logo in header and correct favicon/app icons), no Caffeine AI attribution is visible, and the project builds and deploys successfully with the home page loading and navigation working.
+**User-visible outcome:** A newly deployed draft that matches Draft Version 64 loads successfully in the browser, deploys without errors, and core pages open without crashing.

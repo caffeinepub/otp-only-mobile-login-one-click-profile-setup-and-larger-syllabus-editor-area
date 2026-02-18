@@ -4,45 +4,35 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [
-    "Deployment/build failed during push to network (deployment error)."
+    "Draft app deployment expired; redeploy/rebuild required to continue."
   ],
-  "isFixRequest": true,
-  "imageRequirements": "## Required Images\n- Clean circular 'EX' logo on transparent background (exam-xpresss-logo-clean.dim_512x512.png)\n- Red circular 'EX' favicon icon on transparent background (exam-xpresss-favicon.dim_32x32.png)\n- Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_192x192.png)\n- Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_512x512.png)\n\n## Edit Images\n- Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-3.png > exam-xpresss-logo-clean.dim_512x512.png)\n- Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-4.png > exam-xpresss-logo-clean.dim_512x512.png)",
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-clean-watermark-free-exam-xpresss-logo-assets-from-the-user-uploaded-logo-image-s-and-add-them-as-static-files-under-frontend-public-assets-generated",
-      "title": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
+      "id": "feature-restore-the-application-codebase-to-match-draft-version-64-and-redeploy-it-as-a-new-draft-so-the-user-can-continue-from-version-64-instead-of-the-currently-deployed-draft-version-68",
+      "title": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-generate-favicon-app-icon-pngs-from-the-clean-logo-and-ensure-the-app-uses-them-in-the-html-document-head",
-      "title": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
+      "id": "feature-ensure-the-restored-draft-version-64-build-completes-successfully-and-deploys-to-the-internet-computer-without-build-deployment-errors-address-any-issues-that-prevent-the-version-64-deployment-from-succeeding",
+      "title": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
-    },
-    {
-      "id": "feature-update-verify-ui-branding-to-use-the-exam-xpresss-logo-as-the-primary-brand-mark-in-the-header-and-remove-any-visible-caffeine-ai-caffeine-ai-branding-across-the-ui-including-footer-attribution",
-      "title": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-resolve-the-build-deployment-failure-so-the-project-successfully-builds-and-deploys-to-the-internet-computer-without-errors",
-      "title": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
     }
   ],
-  "new_feature_requests": [],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Convert/redeploy the app to Draft Version 64 (build/deployment request)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
   "projectName": "Exam Xpresss",
   "clarification_mode": "instant",
   "clarification_rounds": 0

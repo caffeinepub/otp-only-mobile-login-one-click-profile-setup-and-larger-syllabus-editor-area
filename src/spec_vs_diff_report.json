@@ -1,89 +1,94 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-16T15:54:48.535Z",
-  "summary": "Branding updates are evident in Header/Footer (logo path and English “Exam Xpresss” text), but there is no evidence that the required generated image assets were added under frontend/public/assets/generated. There is also insufficient evidence that favicon/app icons were generated and wired up, and that the build/deployment failure was fully resolved. Several unrelated/extra changes appear to have been introduced (e.g., sitemap, Google verification, significant auth/session and UX changes).",
+  "generatedAt": "2026-02-18T11:41:51.667Z",
+  "summary": "Diff introduces a Draft Version 64 build label and a number of frontend/UI/UX and configuration changes. It does not provide evidence that the codebase/configuration was actually restored to match the historical Draft Version 64, nor does it provide evidence of successful IC deployment/build completion. Several unrequested features/changes (branding/theme consolidation, sitemap/favicon, admin editor UI changes, error boundary/routing/auth behavior changes) appear to go beyond a “restore/redeploy only” request.",
   "missing_requirements": [
     {
       "id": "REQ-1",
-      "requirement": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
-      "reason": "The UI references /assets/generated/exam-xpresss-logo-clean.dim_512x512.png, but the diff summary shows no added static asset files and provides no evidence that the required PNG actually exists under frontend/public/assets/generated.",
+      "requirement": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
+      "reason": "The diff shows adding a Draft Version 64 label (buildInfo) but does not include evidence of reverting/restoring the broader code/configuration to the exact Draft Version 64 state, nor any redeploy-related changes or artifacts demonstrating the deployed draft is based on Version 64.",
       "evidence": [
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/Footer.tsx",
-        "File diff summary: \"Added: 0\" (no new files shown)"
+        "frontend/src/utils/buildInfo.ts",
+        "frontend/src/components/Footer.tsx"
       ]
     },
     {
       "id": "REQ-2",
-      "requirement": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
-      "reason": "There is no evidence in the diff summary that the required favicon/app icon PNG files were created under frontend/public/assets/generated, and frontend/index.html changes are only described in a secondary summary without showing the actual <link rel=\"icon\"> / apple-touch-icon entries.",
+      "requirement": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
+      "reason": "No build/deployment logs, canister/deploy config changes, or other concrete evidence is included to confirm the frontend build and backend canister deployment complete without errors and core pages render successfully.",
       "evidence": [
-        "frontend-file-summaries.txt (mentions \"frontend/index.html\" corrected favicon paths, but no icon files shown)",
-        "File diff summary: \"Added: 0\" (no new generated PNGs shown)"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "requirement": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
-      "reason": "Header/Footer updates to use the Exam Xpresss logo are evidenced, but the diff summary does not provide enough coverage of all UI text/components to verify that no 'Caffeine AI'/'caffeine.ai' attribution remains anywhere in the UI.",
-      "evidence": [
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/Footer.tsx",
-        "frontend-file-summaries.txt (claims Caffeine AI attribution removed, but does not show all UI files)"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "requirement": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
-      "reason": "While multiple changes suggest attempts to improve build/deployment compatibility (e.g., App routing/auth handling, Tailwind safelist), the diff summary does not include evidence of the specific deployment error being addressed, nor any confirmation that install/build/deploy now succeeds.",
-      "evidence": [
+        "backend/main.mo",
         "frontend/src/App.tsx",
-        "frontend-file-summaries.txt (describes deployment compatibility changes but no demonstrated successful deploy)",
-        "backend/main.mo"
+        "frontend/src/hooks/useQueries.ts",
+        "frontend-file-summaries.txt"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Added/updated sitemap and Google Search Console verification in the HTML.",
-      "reason": "Not requested by the BuildRequest (branding assets + favicon wiring + removing Caffeine AI branding + fix deployment). Sitemap/GSC are extra SEO/marketing additions.",
+      "description": "Added build metadata module and UI display of “Draft Version 64”.",
+      "reason": "REQ-1 asks to restore/redeploy to Draft Version 64, but adding new build tracking code and exposing it in the footer is an implementation change not explicitly requested as part of restoration.",
       "evidence": [
-        "frontend-file-summaries.txt (mentions \"Google Search Console verification\" and \"frontend/public/sitemap.xml\")"
+        "frontend/src/utils/buildInfo.ts",
+        "frontend/src/components/Footer.tsx"
       ]
     },
     {
-      "description": "Substantial UI/UX and behavior changes beyond branding (e.g., new error boundary screen, altered authentication/session handling, retry policies).",
-      "reason": "BuildRequest focuses on branding assets and fixing deployment; broad auth/session and app behavior changes appear to exceed the stated scope and non-goals.",
+      "description": "Introduced/expanded ErrorBoundary UI and additional error handling/navigation behavior in App routing/auth flow.",
+      "reason": "Not requested; goes beyond restore/redeploy and may constitute new behavior/features.",
       "evidence": [
-        "frontend/src/App.tsx (ErrorBoundary, extensive react-query retry logic, session-state auth comment)",
-        "frontend-file-summaries.txt (describes auth/routing state management changes)"
+        "frontend/src/App.tsx"
       ]
     },
     {
-      "description": "Admin panel/editor usability changes (e.g., enlarged syllabus editor sizing).",
-      "reason": "Not requested; could be considered a product/feature tweak unrelated to branding assets or deployment fix.",
+      "description": "Branding/theme redesign and consolidation to a two-color (red/blue) system across multiple pages and global styles/tailwind configuration.",
+      "reason": "Explicitly disallowed as a non-goal (“UI redesign or branding changes unrelated to restoring/redeploying Draft Version 64”).",
       "evidence": [
-        "frontend-file-summaries.txt (\"frontend/src/pages/AdminPanel.tsx\": enlarged syllabus editor 500px min-height, larger font, padding)"
+        "frontend-file-summaries.txt (frontend/src/index.css, frontend/tailwind.config.js, multiple pages: HomePage/CoursesPage/SyllabusPage/ProgressPage/ProfilePage, etc.)",
+        "frontend/src/pages/MockTestsPage.tsx"
       ]
     },
     {
-      "description": "Mobile login modal enhancements including OTP copy-to-clipboard UI.",
-      "reason": "Not requested by branding/deployment-focused BuildRequest; appears to be a new UX feature.",
+      "description": "Added/modified SEO and static site artifacts (sitemap.xml, favicon path fixes, Google Search Console verification, sitemap link).",
+      "reason": "Not requested and outside restore/redeploy scope.",
       "evidence": [
-        "frontend/src/components/MobileLoginModal.tsx (Copy/Check icons, handleCopyOtp, clipboard writeText)"
+        "frontend-file-summaries.txt (frontend/index.html, frontend/public/sitemap.xml)"
+      ]
+    },
+    {
+      "description": "Admin panel syllabus editor UI enlargement and related admin UI work.",
+      "reason": "Not requested; constitutes new/changed product behavior/UI beyond restoring Draft Version 64.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/pages/AdminPanel.tsx)"
+      ]
+    },
+    {
+      "description": "Changed Stripe checkout session handling and mock test purchase flow (e.g., mutation call shape, parsing hardening).",
+      "reason": "Not requested; functional changes beyond restoration.",
+      "evidence": [
+        "frontend/src/pages/MockTestsPage.tsx",
+        "frontend-file-summaries.txt (frontend/src/hooks/useQueries.ts)"
+      ]
+    },
+    {
+      "description": "Footer and header content/branding/social links and contact section changes.",
+      "reason": "Not requested and may be considered branding/UI changes beyond restoration.",
+      "evidence": [
+        "frontend/src/components/Footer.tsx",
+        "frontend-file-summaries.txt (frontend/src/components/Header.tsx)"
       ]
     }
   ],
-  "confidence": 0.68,
+  "confidence": 0.72,
   "changed_files": [
     "backend/main.mo",
     "frontend-file-summaries.txt",
     "frontend/src/App.tsx",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/components/Header.tsx",
-    "frontend/src/components/MobileLoginModal.tsx",
-    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/MockTestsPage.tsx",
+    "frontend/src/utils/buildInfo.ts",
     "project_state.json"
   ]
 }

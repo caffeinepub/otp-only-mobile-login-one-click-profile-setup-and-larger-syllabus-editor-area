@@ -1,3 +1,4 @@
+import AccessControl "authorization/access-control";
 import Map "mo:core/Map";
 import Text "mo:core/Text";
 import Nat "mo:core/Nat";
@@ -8,11 +9,10 @@ import Stripe "stripe/stripe";
 import OutCall "http-outcalls/outcall";
 import Iter "mo:core/Iter";
 import Runtime "mo:core/Runtime";
+import Int "mo:core/Int";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
-import AccessControl "authorization/access-control";
 import Time "mo:core/Time";
-import Int "mo:core/Int";
 
 actor {
   include MixinStorage();
@@ -188,7 +188,7 @@ actor {
       mobile;
       gmail;
       signupTimestamp = ?Time.now();
-      profileComplete = true;
+      profileComplete = true; 
     };
     userProfiles.add(caller, profile);
 
@@ -566,7 +566,7 @@ actor {
 
     let hasPurchased = purchases.filter(func(id : Text) : Bool { id == testId }).size() > 0;
     if (not hasPurchased) {
-      Runtime.trap("Unauthorized: Cannot submit results for a test that hasn't been purchased");
+      Runtime.trap("Unauthorized: Cannot submit results for a test that hasn`t been purchased");
     };
 
     let newResult : TestResult = {
@@ -964,14 +964,8 @@ actor {
       };
 
       // Assign user role after successful OTP verification
-      // This allows the user to access authenticated endpoints
-      // Check if user already has a role assigned
       let currentRole = AccessControl.getUserRole(accessControlState, caller);
-      if (currentRole == #guest) {
-        // Initialize the user with user role
-        // For the first user or if they don't have a role yet
-        ();
-      };
+      if (currentRole == #guest) { () };
     };
 
     isValid;

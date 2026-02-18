@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { SiFacebook, SiX, SiInstagram, SiLinkedin } from 'react-icons/si';
+import { getBuildVersion } from '../utils/buildInfo';
 
 type Page = 'home' | 'mock-tests' | 'courses' | 'syllabus' | 'progress' | 'profile' | 'admin' | 'payment-success' | 'payment-failure';
 
@@ -9,6 +10,7 @@ interface FooterProps {
 
 const Footer = memo(function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const buildVersion = getBuildVersion();
 
   const socialLinks = [
     { icon: SiFacebook, href: '#', label: 'Facebook', colorClass: 'text-brand-blue hover:text-brand-blue/80' },
@@ -97,8 +99,9 @@ const Footer = memo(function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>© {currentYear} Exam Xpresss. All rights reserved.</p>
+        <div className="mt-8 pt-8 border-t text-center space-y-1">
+          <p className="text-sm text-muted-foreground">© {currentYear} Exam Xpresss. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground/60">{buildVersion}</p>
         </div>
       </div>
     </footer>

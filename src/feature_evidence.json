@@ -2,9 +2,13 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-clean-watermark-free-exam-xpresss-logo-assets-from-the-user-uploaded-logo-image-s-and-add-them-as-static-files-under-frontend-public-assets-generated",
-      "featureTitle": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
-      "files": [],
+      "featureId": "feature-restore-the-application-codebase-to-match-draft-version-64-and-redeploy-it-as-a-new-draft-so-the-user-can-continue-from-version-64-instead-of-the-currently-deployed-draft-version-68",
+      "featureTitle": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/utils/buildInfo.ts"
+      ],
       "components": [
         "authorization@4.0.0",
         "blob-storage@4.0.0",
@@ -22,9 +26,12 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-generate-favicon-app-icon-pngs-from-the-clean-logo-and-ensure-the-app-uses-them-in-the-html-document-head",
-      "featureTitle": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
-      "files": [],
+      "featureId": "feature-ensure-the-restored-draft-version-64-build-completes-successfully-and-deploys-to-the-internet-computer-without-build-deployment-errors-address-any-issues-that-prevent-the-version-64-deployment-from-succeeding",
+      "featureTitle": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ],
       "components": [
         "authorization@4.0.0",
         "blob-storage@4.0.0",
@@ -38,54 +45,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-verify-ui-branding-to-use-the-exam-xpresss-logo-as-the-primary-brand-mark-in-the-header-and-remove-any-visible-caffeine-ai-caffeine-ai-branding-across-the-ui-including-footer-attribution",
-      "featureTitle": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
-      "files": [
-        "frontend/src/components/Footer.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/pages/HomePage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "stripe@3.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "http-outcalls@3.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-resolve-the-build-deployment-failure-so-the-project-successfully-builds-and-deploys-to-the-internet-computer-without-errors",
-      "featureTitle": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Footer.tsx",
-        "frontend/src/components/MobileLoginModal.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "stripe@3.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "http-outcalls@3.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
       ],
       "confidence": "high"
     }

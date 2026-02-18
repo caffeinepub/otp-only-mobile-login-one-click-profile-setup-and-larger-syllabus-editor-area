@@ -1,11 +1,11 @@
 {
-  "frontend/src/App.tsx": "Main application component with URL-synchronized routing, authentication state management, profile setup modal, error boundaries, and proper navigation handling for deployment compatibility.",
-  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including useUpdateMockTestPrice, useIsStripeConfigured, useSetStripeConfiguration, useGetUserTestResults (alias), and useCreateCheckoutSession with proper types and query invalidation.",
+  "frontend/src/App.tsx": "Main application component with URL-synchronized routing, authentication state management, profile setup modal, error boundaries, and proper navigation handling without duplicate QueryClientProvider.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including useGetAllUserProfiles for admin panel, with hardened Stripe checkout session parsing that validates JSON structure and ensures non-empty URL before returning.",
   "frontend/src/components/Header.tsx": "Responsive header with Exam Xpresss logo and branding, navigation items using red/blue brand colors, and user avatar with dropdown menu.",
-  "frontend/src/components/Footer.tsx": "Footer with Exam Xpresss branding, social links, quick navigation, and contact info; all Caffeine AI attribution removed, only copyright notice remains.",
+  "frontend/src/components/Footer.tsx": "Footer component with Exam Xpresss branding, social links, quick navigation, contact info, and Draft Version 64 display in the copyright section.",
   "frontend/src/components/ProfileSetupModal.tsx": "Profile setup modal that collects name, mobile (pre-filled from OTP session), email, and profile photo, with validation and blob storage upload support.",
   "frontend/src/pages/HomePage.tsx": "Landing page with red-blue gradient hero, feature cards, benefit badges, and CTA sections using explicit brand color classes instead of dynamic string construction for production build stability.",
-  "frontend/src/pages/MockTestsPage.tsx": "Mock tests listing with subject-specific red/blue accent colors for tabs, badges, cards, and CTAs, using the simplified brand color system that alternates between the two premium colors.",
+  "frontend/src/pages/MockTestsPage.tsx": "Mock tests listing page with subject-specific red/blue accent colors for tabs, badges, cards, and CTAs, with corrected checkout session mutation call passing ShoppingItem array directly instead of wrapped in object.",
   "frontend/src/pages/CoursesPage.tsx": "Video courses page with subject-specific red/blue accent colors for headers, cards, badges, and video items, using the simplified brand color system that alternates between red and blue based on subject.",
   "frontend/src/pages/SyllabusPage.tsx": "Syllabus display with subject-specific red/blue accent colors for cards, accordion triggers, and topic items, using the simplified two-color brand system for all interactive elements.",
   "frontend/src/pages/ProgressPage.tsx": "Progress dashboard with metric cards alternating between red and blue accents, charts using the two brand colors, and recent results with red/blue border accents based on index.",
@@ -22,5 +22,7 @@
   "frontend/src/components/SignupModal.tsx": "Deprecated signup modal component displaying a notice that directs users to use the mobile OTP login flow instead.",
   "frontend/src/components/LoginModal.tsx": "Unified OTP authentication modal with connection status awareness that shows appropriate in-progress messages during authentication/initialization phases, only displays service error banners for real connection failures, and disables actions appropriately during connecting states.",
   "frontend/public/assets/default-avatar.svg": "Simple SVG default avatar with blue circle design used for auto-created user profiles.",
-  "frontend/src/utils/accents.ts": "Refactored accent utility system providing only red and blue brand colors with helper functions that alternate between the two colors for variety, replacing the previous multi-accent rotation system with a simplified two-color approach."
+  "frontend/src/utils/accents.ts": "Refactored accent utility system providing only red and blue brand colors with helper functions that alternate between the two colors for variety, replacing the previous multi-accent rotation system with a simplified two-color approach.",
+  "frontend/src/utils/buildInfo.ts": "Build metadata module that tracks Draft Version 64 and provides a helper function to retrieve the version string for display in the UI.",
+  "frontend/src/main.tsx": "Application entry point with single QueryClientProvider wrapping InternetIdentityProvider and App, with proper query client configuration for retries and error handling."
 }

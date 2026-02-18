@@ -1,112 +1,61 @@
 {
   "kind": "build_request",
-  "title": "Apply Exam Xpresss branding assets and fix failed deployment",
+  "title": "Redeploy Exam Xpresss as Draft Version 64",
   "projectName": "Exam Xpresss",
   "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create clean, watermark-free Exam Xpresss logo assets from the user-uploaded logo image(s) and add them as static files under frontend/public/assets/generated.",
-      "target": "frontend",
+      "text": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-9",
+          "msg-10"
         ],
         "quotes": [
+          "Convert  64 version",
           "Do it now"
         ]
       },
       "acceptanceCriteria": [
-        "A clean transparent logo file exists at /assets/generated/exam-xpresss-logo-clean.dim_512x512.png.",
-        "The generated logo has no visible watermark/artifacts and maintains crisp edges and centered composition.",
-        "The generated assets are committed under frontend/public/assets/generated (served statically; not routed through the backend)."
+        "The resulting deployed draft is based on the same code and configuration as Draft Version 64.",
+        "The newly deployed draft is accessible and loads successfully in the browser."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Generate favicon/app icon PNGs from the clean logo and ensure the app uses them in the HTML document head.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Do it now"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The following files exist under frontend/public/assets/generated: exam-xpresss-favicon.dim_32x32.png, exam-xpresss-icon.dim_192x192.png, exam-xpresss-icon.dim_512x512.png.",
-        "frontend/index.html references the generated favicon and app icons using <link rel=\"icon\"> and apple-touch-icon appropriately.",
-        "Browser tab favicon displays the Exam Xpresss icon when running the app."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Update/verify UI branding to use the Exam Xpresss logo as the primary brand mark in the header and remove any visible 'Caffeine AI' / 'caffeine.ai' branding across the UI (including footer attribution).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Do it now"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The header brand mark uses /assets/generated/exam-xpresss-logo-clean.dim_512x512.png and remains responsive with the existing header layout intact.",
-        "No visible text/link attribution to 'Caffeine AI' or 'caffeine.ai' appears anywhere in the UI (including the footer).",
-        "All user-facing text related to branding is in English."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Resolve the build/deployment failure so the project successfully builds and deploys to the Internet Computer without errors.",
+      "text": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-1",
+          "msg-2",
+          "msg-10"
         ],
         "quotes": [
+          "Deployment didn't complete",
+          "Deployment error",
           "Do it now"
         ]
       },
       "acceptanceCriteria": [
-        "A clean install + build completes successfully (frontend build and Motoko canister build).",
-        "Deployment/push to network completes successfully without the previously encountered deployment error.",
-        "No runtime errors occur on initial load after deployment (home page renders and navigation works)."
+        "Frontend build completes without errors.",
+        "Backend canister deploy completes without errors.",
+        "App starts and core pages render (Home, Mock Tests, Courses, Syllabus, Profile) without crashing."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo; only add backend migration (backend/migration.mo) if an upgrade requiring state migration is necessary.",
-    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or any code under frontend/src/components/ui; compose/consume them instead.",
-    "Store and serve generated images as static assets under frontend/public/assets/generated (do not proxy images through the backend)."
+    "Backend must remain a single-actor Motoko architecture (all logic in backend/main.mo).",
+    "Do not edit any frontend files under the immutable paths listed in SYSTEM_CONTEXT (compose instead of modifying those sources)."
   ],
   "nonGoals": [
-    "Add new product features unrelated to branding (e.g., new pages, new payment flows, new test/course functionality).",
-    "Introduce third-party authentication providers beyond Internet Identity.",
-    "Add external databases or non-Motoko backend services."
+    "Adding new product features beyond restoring/redeploying Draft Version 64.",
+    "UI redesign or branding changes unrelated to restoring/redeploying Draft Version 64."
   ],
   "imageRequirements": {
-    "required": [
-      "Clean circular 'EX' logo on transparent background (exam-xpresss-logo-clean.dim_512x512.png)",
-      "Red circular 'EX' favicon icon on transparent background (exam-xpresss-favicon.dim_32x32.png)",
-      "Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_192x192.png)",
-      "Red circular 'EX' app icon on transparent background (exam-xpresss-icon.dim_512x512.png)"
-    ],
-    "edits": [
-      "Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-3.png > exam-xpresss-logo-clean.dim_512x512.png)",
-      "Remove any watermark/artifacts and export a clean transparent logo asset (IMG_20260121_194813_007-removebg-preview-4.png > exam-xpresss-logo-clean.dim_512x512.png)"
-    ]
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
+    "required": [],
+    "edits": []
   }
 }

@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Restore Exam Xpresss to Draft Version 64 and redeploy it as a new draft so development can continue from Version 64 (instead of the currently deployed Draft Version 68).
+**Goal:** Replace the current logo with the uploaded circular logo and ensure proper sizing and circular styling in the header.
 
 **Planned changes:**
-- Restore the application codebase and configuration to match Draft Version 64.
-- Redeploy the restored Version 64 as a new draft.
-- Fix any build/deployment blockers encountered so the Version 64 frontend build and backend canister deploy complete successfully and core pages render (Home, Mock Tests, Courses, Syllabus, Profile).
+- Replace existing logo assets with the uploaded circular logo (cropped_circle_image.png)
+- Adjust logo size in the Header component to be appropriately scaled
+- Apply circular styling with CSS (rounded-full) to maintain circular appearance
+- Generate logo variants in multiple sizes for different use cases (header, favicons, touch icons)
 
-**User-visible outcome:** A newly deployed draft that matches Draft Version 64 loads successfully in the browser, deploys without errors, and core pages open without crashing.
+**User-visible outcome:** The header displays a properly sized, circular red logo with white 'EX' letters that looks balanced and professional across all devices.

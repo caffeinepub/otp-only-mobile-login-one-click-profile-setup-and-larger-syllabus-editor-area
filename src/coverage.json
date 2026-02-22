@@ -1,58 +1,47 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-18T11:41:51.671Z",
+  "generatedAt": "2026-02-18T17:02:42.459Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
     "total": 2,
-    "implemented": 2,
+    "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
-        "status": "implemented",
+        "summary": "Replace the current logo image with the uploaded circular logo (cropped_circle_image.png) in all sizes",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/utils/buildInfo.ts",
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/App.tsx"
+          "frontend/index.html"
         ],
-        "matchedFiles": [
-          "frontend/src/utils/buildInfo.ts",
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/App.tsx"
-        ]
+        "matchedFiles": []
       },
       {
         "id": "REQ-2",
-        "summary": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
+        "summary": "Adjust the logo size in the Header component to be appropriately scaled and ensure circular styling is preserved with proper CSS (rounded-full or equivalent)",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/main.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/App.tsx"
+          "frontend/src/components/Header.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/App.tsx"
+          "frontend/src/components/Header.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/Footer.tsx",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/MockTestsPage.tsx",
-    "frontend/src/utils/buildInfo.ts",
+    "frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
+    "frontend/public/assets/generated/favicon-16x16.dim_16x16.png",
+    "frontend/public/assets/generated/favicon-32x32.dim_32x32.png",
+    "frontend/public/assets/generated/logo-header.dim_64x64.png",
+    "frontend/src/components/Header.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

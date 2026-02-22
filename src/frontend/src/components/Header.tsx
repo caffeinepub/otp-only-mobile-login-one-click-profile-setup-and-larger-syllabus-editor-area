@@ -46,15 +46,12 @@ const Header = memo(function Header({ currentPage, onNavigate, onLoginClick, isA
               onClick={() => onNavigate('home')}
               className="flex items-center gap-3 group"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-red to-brand-blue rounded-full blur-sm opacity-75 group-hover:opacity-100 transition-opacity" />
-                <div className="relative h-10 w-10 rounded-full bg-gradient-to-br from-brand-red to-brand-blue flex items-center justify-center ring-2 ring-background overflow-hidden">
-                  <img 
-                    src="/assets/generated/exam-xpresss-logo-clean.dim_512x512.png" 
-                    alt="Exam Xpresss Logo" 
-                    className="h-full w-full object-contain p-1"
-                  />
-                </div>
+              <div className="relative h-12 w-12 flex-shrink-0">
+                <img 
+                  src="/assets/generated/logo-header.dim_64x64.png" 
+                  alt="Exam Xpresss Logo" 
+                  className="h-full w-full object-cover rounded-full"
+                />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-brand-red to-brand-blue bg-clip-text text-transparent">
                 Exam Xpresss

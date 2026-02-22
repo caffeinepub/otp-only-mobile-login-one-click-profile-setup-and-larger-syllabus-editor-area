@@ -1,61 +1,36 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Exam Xpresss — Restore Draft Version 64 (Frontend-only)",
+  "title": "Resize logo and apply circular styling",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Align the frontend UI/build metadata with Draft Version 64 so the redeployed draft clearly reflects Version 64.",
+      "summary": "Replace current logo image with uploaded circular logo in all sizes",
       "acceptanceCriteria": [
-        "The resulting deployed draft is based on the same code and configuration as Draft Version 64.",
-        "The newly deployed draft is accessible and loads successfully in the browser."
+        "The uploaded circular logo replaces existing logo assets",
+        "Logo maintains circular appearance across all placements"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/utils/buildInfo.ts",
-          "operation": "create",
-          "description": "Add a small, centralized build metadata module (e.g., draft version identifier set to 64) that can be used by the UI to confirm the restored draft version at runtime."
-        },
-        {
-          "path": "frontend/src/components/Footer.tsx",
+          "path": "frontend/index.html",
           "operation": "modify",
-          "description": "Render the Draft Version value from frontend/src/utils/buildInfo.ts in a subtle location (e.g., footer) to confirm the app is running Draft Version 64 after redeploy."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Ensure any app-visible version labeling/metadata wiring uses the centralized build info module so the restored Draft Version 64 is consistently represented across the UI."
+          "description": "Update favicon link references to use the generated circular logo assets: frontend/public/assets/generated/favicon-32x32.dim_32x32.png for 32x32 favicon, frontend/public/assets/generated/favicon-16x16.dim_16x16.png for 16x16 favicon, and frontend/public/assets/generated/apple-touch-icon.dim_180x180.png for Apple touch icon. Replace existing favicon paths with these exact workspace file paths."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Fix frontend build/runtime issues that could prevent successful deployment and core page rendering.",
+      "summary": "Adjust logo size in Header component and ensure circular styling with CSS",
       "acceptanceCriteria": [
-        "Frontend build completes without errors.",
-        "Backend canister deploy completes without errors.",
-        "App starts and core pages render (Home, Mock Tests, Courses, Syllabus, Profile) without crashing."
+        "Logo size is visually balanced in the header",
+        "Circular shape is maintained with CSS styling",
+        "Logo displays correctly on mobile and desktop viewports"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useActor.ts",
+          "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Resolve TypeScript build failure risk by safely invoking any actor methods not present in frontend/src/backend.d.ts (e.g., by narrowing/casting) so the frontend build completes without type errors."
-        },
-        {
-          "path": "frontend/src/main.tsx",
-          "operation": "modify",
-          "description": "Remove redundant nested React Query provider setup (QueryClientProvider) and ensure the app uses a single, consistent QueryClient configuration so core pages can render reliably without provider/context mismatches."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Harden Stripe checkout session parsing by validating the parsed session object shape before use (especially presence of a non-empty url), preventing runtime crashes during purchase flow on Mock Tests."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Verify core page navigation/state sync (Home, Mock Tests, Courses, Syllabus, Profile) remains stable after provider/auth changes, and that unauthenticated access handling does not cause render loops or crashes."
+          "description": "Update the logo image source to use the generated header logo at frontend/public/assets/generated/logo-header.dim_64x64.png. Add or update CSS classes to ensure the logo has rounded-full (or equivalent border-radius: 50%) styling to maintain circular appearance. Adjust the image dimensions (width/height attributes or Tailwind classes) to achieve appropriate scaling for header display, ensuring visibility on both mobile and desktop viewports."
         }
       ]
     }

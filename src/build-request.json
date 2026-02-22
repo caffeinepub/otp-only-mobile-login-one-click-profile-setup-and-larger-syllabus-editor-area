@@ -1,61 +1,60 @@
 {
   "kind": "build_request",
-  "title": "Redeploy Exam Xpresss as Draft Version 64",
-  "projectName": "Exam Xpresss",
-  "priority": "high",
+  "title": "Resize logo and apply circular styling",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
-      "target": "unknown",
+      "text": "Replace the current logo image with the uploaded circular logo (cropped_circle_image.png) in all sizes",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-9",
-          "msg-10"
+          "msg-user-current"
         ],
         "quotes": [
-          "Convert  64 version",
-          "Do it now"
+          "Size  CIRCULE ME karo aur perfect karo"
         ]
       },
       "acceptanceCriteria": [
-        "The resulting deployed draft is based on the same code and configuration as Draft Version 64.",
-        "The newly deployed draft is accessible and loads successfully in the browser."
+        "The uploaded circular logo replaces existing logo assets",
+        "Logo maintains circular appearance across all placements"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
-      "target": "both",
+      "text": "Adjust the logo size in the Header component to be appropriately scaled and ensure circular styling is preserved with proper CSS (rounded-full or equivalent)",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1",
-          "msg-2",
-          "msg-10"
+          "msg-user-current"
         ],
         "quotes": [
-          "Deployment didn't complete",
-          "Deployment error",
-          "Do it now"
+          "Size  CIRCULE ME karo aur perfect karo"
         ]
       },
       "acceptanceCriteria": [
-        "Frontend build completes without errors.",
-        "Backend canister deploy completes without errors.",
-        "App starts and core pages render (Home, Mock Tests, Courses, Syllabus, Profile) without crashing."
+        "Logo size is visually balanced in the header",
+        "Circular shape is maintained with CSS styling",
+        "Logo displays correctly on mobile and desktop viewports"
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single-actor Motoko architecture (all logic in backend/main.mo).",
-    "Do not edit any frontend files under the immutable paths listed in SYSTEM_CONTEXT (compose instead of modifying those sources)."
+    "Do not modify backend files",
+    "Preserve existing Header component structure and functionality"
   ],
   "nonGoals": [
-    "Adding new product features beyond restoring/redeploying Draft Version 64.",
-    "UI redesign or branding changes unrelated to restoring/redeploying Draft Version 64."
+    "Changing logo colors or branding",
+    "Modifying other header elements besides the logo",
+    "Updating footer logo"
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Circular red logo with white 'EX' letters for header display (logo-header.dim_64x64.png)",
+      "Circular red logo with white 'EX' letters for favicon 32x32 (favicon-32x32.dim_32x32.png)",
+      "Circular red logo with white 'EX' letters for favicon 16x16 (favicon-16x16.dim_16x16.png)",
+      "Circular red logo with white 'EX' letters for Apple touch icon (apple-touch-icon.dim_180x180.png)"
+    ],
     "edits": []
   }
 }

@@ -3,22 +3,13 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [
-    "Draft app deployment expired; redeploy/rebuild required to continue."
-  ],
+  "known_issues": [],
   "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Circular red logo with white 'EX' letters for header display (logo-header.dim_64x64.png)\n- Circular red logo with white 'EX' letters for favicon 32x32 (favicon-32x32.dim_32x32.png)\n- Circular red logo with white 'EX' letters for favicon 16x16 (favicon-16x16.dim_16x16.png)\n- Circular red logo with white 'EX' letters for Apple touch icon (apple-touch-icon.dim_180x180.png)",
   "existing_features": [
     {
-      "id": "feature-restore-the-application-codebase-to-match-draft-version-64-and-redeploy-it-as-a-new-draft-so-the-user-can-continue-from-version-64-instead-of-the-currently-deployed-draft-version-68",
-      "title": "Restore the application codebase to match Draft Version 64 and redeploy it as a new draft so the user can continue from Version 64 instead of the currently deployed Draft Version 68.",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-ensure-the-restored-draft-version-64-build-completes-successfully-and-deploys-to-the-internet-computer-without-build-deployment-errors-address-any-issues-that-prevent-the-version-64-deployment-from-succeeding",
-      "title": "Ensure the restored Draft Version 64 build completes successfully and deploys to the Internet Computer without build/deployment errors (address any issues that prevent the Version 64 deployment from succeeding).",
+      "id": "feature-adjust-the-logo-size-in-the-header-component-to-be-appropriately-scaled-and-ensure-circular-styling-is-preserved-with-proper-css-rounded-full-or-equivalent",
+      "title": "Adjust the logo size in the Header component to be appropriately scaled and ensure circular styling is preserved with proper CSS (rounded-full or equivalent)",
       "reqIds": [
         "REQ-2"
       ],
@@ -28,12 +19,20 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Convert/redeploy the app to Draft Version 64 (build/deployment request)",
+      "summary": "Adjust logo size and make it circular with proper styling",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Replace the current logo image with the uploaded circular logo (cropped_circle_image.png) in all sizes",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     }
   ],
-  "projectName": "Exam Xpresss",
+  "projectName": "Resize logo and apply circular styling",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
